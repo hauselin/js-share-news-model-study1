@@ -24,14 +24,16 @@ var responses_share = {
 };
 var responses_share_options = jsPsych.randomization.repeat(Object.keys(responses_share), 1);
 
-
-
-
 var responses_accuracy = {
     "yes": 1,
     "no": 0
 };
 var responses_accuracy_options = jsPsych.randomization.repeat(Object.keys(responses_accuracy), 1);
+
+
+
+
+
 
 jsPsych.data.addProperties({
     // subject: info_.subject,
@@ -42,14 +44,35 @@ jsPsych.data.addProperties({
     // info_: info_,
 });
 
+// add url parameters
+const urlvar = jsPsych.data.urlVariables();
+const urlvar_keys = Object.keys(urlvar);
+const urlvar_n = urlvar_keys.length;
+console.log("URL variables")
+
+if (urlvar_n > 0) {
+    for (var i = 0; i < urlvar_n; i++) {
+        var key_i = urlvar_keys[i];
+        var temp_obj = {};
+        temp_obj[key_i] = urlvar[urlvar_keys[i]];
+        console.log(temp_obj)
+        jsPsych.data.addProperties(temp_obj);
+    }
+}
+
 
 
 var timeline = [];  // create experiment timeline
 
 
 
+// TODO start instructions and screener
+
+
+
+
 // block: pre-treatment
-var trial_headline_pre = {
+var trial_share_pre = {
     type: 'image-button-response',
     stimulus: jsPsych.timelineVariable("img_path"),
     data: {
@@ -75,8 +98,8 @@ var trial_headline_pre = {
     }
 }
 
-var trial_headline_pre_procedure = {
-    timeline: [trial_headline_pre],
+var trial_share_pre_procedure = {
+    timeline: [trial_share_pre],
     timeline_variables: stimuli,
     repetitions: 1
 }
@@ -94,7 +117,7 @@ var trial_headline_pre_procedure = {
 
 
 // block: accuracy treatment
-var trial_treat_instructions = {
+var trial_treatment_instructions = {
     type: 'instructions',
     pages: [
         "Now you'll take a short break." + 
@@ -150,7 +173,7 @@ var trial_treatment_procedure = {
 
 
 
-
+// TODO 
 // block: post-treatment
 
 
@@ -159,7 +182,7 @@ var trial_treatment_procedure = {
 
 
 
-
+// TODO: add CRT
 
 
 
@@ -169,8 +192,8 @@ var trial_treatment_procedure = {
 
 
 // push objects into timeline
-timeline.push(trial_headline_pre_procedure)
-timeline.push(trial_treat_instructions)
+timeline.push(trial_share_pre_procedure)
+timeline.push(trial_treatment_instructions)
 timeline.push(trial_treatment_procedure)
 
 

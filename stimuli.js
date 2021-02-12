@@ -1,3 +1,4 @@
+// TODO: create csv and convert to json
 var stimuli = [
     {
         "img_path": "stimuli/F_Chinese Doctors Confirmed African Blood Genetic Composition Resist Coronavirsu After Student Cured.png",
