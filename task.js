@@ -2,22 +2,29 @@ const taskinfo = {
     type: 'study', // 'task', 'survey', or 'study'
     uniquestudyid: 'js-share-news-model-study1', // unique task id: must be IDENTICAL to directory name
     desc: 'accuracy-nudge-headline', // brief description of task
-    condition: 'pre-post-design', // experiment/task condition
+    condition: 'between-within-design', // experiment/task condition
     redirect_url: false // set to false if no redirection required
 };
 
 const debug = true;
-
-if (debug) {
-    headlines_per_block = 5;
-    stimuli = stimuli.filter(i => i.img_idx <= 5);
-} 
-
+const debug_n = 5; // no. of trials to present during debug
+const debug_treat_condition = 'funny'  // funny or accuracy
 
 // DEFINE TASK PARAMETERS
 const rt_deadline = null;
-var itis = iti_exponential(200, 700);
+var itis = iti_exponential(200, 700); 
+var n_stim = {
+    "pre_fake": 20,
+    'pre_real': 20,
+    // 'pre_total': 40,
+    "post_fake": 20,
+    'post_real': 20,
+    // 'post_total': 40,
+    'n_treat': 1
+};
+var current_trial = 0; 
 
+// counterbalance/randomize response options
 var responses_share = {
     "likely to share": 1,
     "unlikely to share": 0
@@ -30,7 +37,25 @@ var responses_accuracy = {
 };
 var responses_accuracy_options = jsPsych.randomization.repeat(Object.keys(responses_accuracy), 1);
 
+// prepare stimuli
+stimuli = jsPsych.randomization.repeat(stimuli, 1);  // shuffle
+// fake and real stim
+var stimuli_fake = stimuli.filter(i => i.veracity == 'fake').slice(0, n_stim['pre_fake'] + n_stim['post_fake'])
+var stimuli_real = stimuli.filter(i => i.veracity == 'real').slice(0, n_stim['pre_real'] + n_stim['post_real'])
+// pre/post stimuli
+var stimuli_pre = stimuli_fake.slice(0, stimuli_fake.length / 2).concat(stimuli_real.slice(0, stimuli_real.length / 2))
+stimuli_pre.map(i => i.category = "block1-pre")
+stimuli_pre = jsPsych.randomization.repeat(stimuli_pre, 1);  // shuffle
+var stimuli_post = stimuli_fake.slice(stimuli_fake.length / 2, stimuli_fake.length).concat(stimuli_real.slice(stimuli_real.length / 2, stimuli_real.length))
+stimuli_post.map(i => i.category = "block2-post")
+stimuli_post = jsPsych.randomization.repeat(stimuli_post, 1);  // shuffle
+// treatment stim
+var stimuli_treat = stimuli[stimuli.length - 1]
 
+if (debug) {
+    stimuli_pre = stimuli_pre.slice(0, debug_n);
+    stimuli_post = stimuli_post.slice(0, debug_n);
+}
 
 
 
@@ -76,8 +101,8 @@ var trial_share_pre = {
     type: 'image-button-response',
     stimulus: jsPsych.timelineVariable("img_path"),
     data: {
-        img_set: jsPsych.timelineVariable("img_set"),
         img_category: jsPsych.timelineVariable("img_category"),
+        veracity: jsPsych.timelineVariable("veracity"),
     },
     trial_duration: rt_deadline,
     choices: responses_share_options,
@@ -88,19 +113,22 @@ var trial_share_pre = {
     on_finish: function (data) {
         data.block = 'block1-share'
         data.event = 'response';
+        current_trial += 1;
+        data.trial = current_trial;
         if (data.button_pressed) {
             data.choice_text = responses_share_options[1];
         } else {
             data.choice_text = responses_share_options[0];
         }
         data.choice = responses_share[data.choice_text]
+        console.log("Veracity: " + data.veracity);
         console.log("Share: " + data.choice);
     }
 }
 
 var trial_share_pre_procedure = {
     timeline: [trial_share_pre],
-    timeline_variables: stimuli,
+    timeline_variables: stimuli_pre,
     repetitions: 1
 }
 
@@ -135,7 +163,6 @@ var trial_treatment = {
     type: 'image-button-response',
     stimulus: jsPsych.timelineVariable("img_path"),
     data: {
-        img_set: jsPsych.timelineVariable("img_set"),
         img_category: jsPsych.timelineVariable("img_category")
     },
     trial_duration: rt_deadline,
@@ -150,8 +177,10 @@ var trial_treatment = {
         '<button class="jspsych-btn" style="position:relative; left:70px; top:100px">%choice%</button>'
     ],
     on_finish: function (data) {
-        data.block = "accuracy_nudge"
+        data.block = "treat"
         data.event = 'response';
+        // current_trial += 1;
+        // data.trial = current_trial;
         if (data.button_pressed) {
             data.choice_text = responses_accuracy_options[1];   
         } else {
@@ -164,7 +193,7 @@ var trial_treatment = {
 
 var trial_treatment_procedure = {
     timeline: [trial_treatment],
-    timeline_variables: [random_choice(stimuli)],
+    timeline_variables: [stimuli_treat],
     repetitions: 1
 }
 
