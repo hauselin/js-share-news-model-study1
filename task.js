@@ -143,6 +143,10 @@ var timeline = [];  // create experiment timeline
 
 
 
+
+
+
+
 // TODO start instructions and screener
 var instructions_start = {
     type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
@@ -183,7 +187,6 @@ var socialmedia_content_share_other = {
     }
 } 
 
-
 var socialmedia_account = {
     type: 'survey-multi-select',
     questions: [
@@ -222,10 +225,33 @@ var socialmedia_account_other = {
 
 
 
+var covid_concern = {
+    timeline: [{
+        type: 'html-slider-response',
+        stimulus: jsPsych.timelineVariable('desc'),
+        data: {
+            block: jsPsych.timelineVariable('name') 
+        },
+        labels: function () {
+            return jsPsych.timelineVariable('labels')
+        },
+        slider_width: 500,
+        min: 0, max: 100, start: 50, step: 1.0, require_movement: true,
+        on_finish: function (data) {
+            data.event = 'prescreen';
+            data.start_point = 50;
+            data.resp = Number(data.response);
+            if (debug) {
+                console.log("name: " + data.block + "; repsonse: " + data.response);
+            }
+        }
+    }],
 
-// TODO COVID concern
-
-
+    timeline_variables: [
+        { "desc": "How concerned are you about COVID-19 (the new coronavirus)?", "labels": ['not concerned at all', 'extremely concerned'], "name": "covid-concern"},
+        { "desc": "How often do you proactively check the news regarding COVID-19 (the new coronavirus)?", "labels": ["never", "very often"], "name": "covid-news-freq"}],  
+    randomize_order: false
+};
 
 
 
@@ -300,7 +326,7 @@ var screen1 = {
 // block: pre-treatment
 var instructions_pre = {
     type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
-    pages: ["You will be presented with a set of news headlines and from social media.",
+    pages: ["In a moment, you will be presented with a set of news headlines and from social media.",
         "We are interested in the extent to which you would consider sharing them on social media if you had seen them there."]
 }
 
@@ -481,9 +507,10 @@ var trial_share_post_procedure = {
 // timeline.push(socialmedia_content_share_other)
 // timeline.push(socialmedia_account)
 // timeline.push(socialmedia_account_other)
-timeline.push(screen1)
+// timeline.push(covid_concern)
+// timeline.push(screen1)
 // timeline.push(instructions_pre)
-// timeline.push(trial_pre_procedure_practice)
+timeline.push(trial_pre_procedure_practice)
 // timeline.push(trial_share_pre_procedure)
 // timeline.push(trial_treatment_instructions)
 // timeline.push(trial_treatment_procedure)
