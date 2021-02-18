@@ -1,25 +1,25 @@
 const taskinfo = {
     type: 'study', // 'task', 'survey', or 'study'
     uniquestudyid: 'js-share-news-model-study1', // unique task id: must be IDENTICAL to directory name
-    desc: 'accuracy-nudge-headline', // brief description of task
+    desc: 'accuracy-funny-nudge', // brief description of task
     condition: 'between-within-design', // experiment/task condition
     redirect_url: false // set to false if no redirection required
 };
 
+// debug parameters
 const debug = true;
 const debug_n = 5; // no. of trials to present during debug
 const debug_treat_condition = 'funny'  // funny or accuracy
 
 // DEFINE TASK PARAMETERS
 const rt_deadline = null;
+const stim_width = 500;
 var itis = iti_exponential(200, 700); 
 var n_stim = {
     "pre_fake": 20,
     'pre_real': 20,
-    // 'pre_total': 40,
     "post_fake": 20,
     'post_real': 20,
-    // 'post_total': 40,
     'n_treat': 1
 };
 var current_trial = 0; 
@@ -57,11 +57,60 @@ if (debug) {
     stimuli_post = stimuli_post.slice(0, debug_n);
 }
 
+// treatment instructions
+var treat_instructions = {
+    "funny": [
+        "Now you'll take a short break." +
+        "<p>During this break, we would like to pretest an actual news headline for future studies.</p>" +
+        "<p>We are interested in whether people think it is <strong>funny or not</strong>.</p>" +
+        "<p>We only need you to give your opinion about the <strong>funniness of a single headline</strong>.</p>" +
+        "<p>After that, you will continue on to the task you were working on just now.</p> ",
+    ],
+    "accuracy": [
+        "Now you'll take a short break." +
+        "<p>During this break, we would like to pretest an actual news headline for future studies.</p>" +
+        "<p>We are interested in whether people think it is <strong>accurate or not</strong>.</p>" +
+        "<p>We only need you to give your opinion about the <strong>accuracy of a single headline</strong>.</p>" +
+        "<p>After that, you will continue on to the task you were working on just now.</p> ",
+    ]
+};
+var treat_prompt = {
+    "funny": "To the best of your knowledge, is the above headline <strong>funny</strong>?",
+    "accuracy": "To the best of your knowledge, is the above headline <strong>accurate</strong>?"
+}
+
+
+
+
+
+// generate subject ID
+var date = new Date()
+var subject_id = jsPsych.randomization.randomID(5) + "_" + date.getTime()
+console.log("subject ID: " + subject_id);
+
+
+
+if (debug) {
+    var treat_instructions = treat_instructions[debug_treat_condition]
+    var treat_prompt = treat_prompt[debug_treat_condition]
+    var condition = debug_treat_condition;
+} else {
+    if (date.getTime() % 2) {
+        var condition = 'funny';
+    } else {
+        var condition = 'accuracy';
+    }
+    // var condition = random_choice(['funny', 'accuracy']);
+    var treat_instructions = treat_instructions[condition];
+    var treat_prompt = treat_prompt[condition]
+}
+console.log("CONDITION: " + condition);
+
 
 
 
 jsPsych.data.addProperties({
-    // subject: info_.subject,
+    subject: subject_id,
     type: taskinfo.type,
     uniquestudyid: taskinfo.uniquestudyid,
     desc: taskinfo.desc,
@@ -73,9 +122,8 @@ jsPsych.data.addProperties({
 const urlvar = jsPsych.data.urlVariables();
 const urlvar_keys = Object.keys(urlvar);
 const urlvar_n = urlvar_keys.length;
-console.log("URL variables")
-
 if (urlvar_n > 0) {
+    console.log("URL variables")
     for (var i = 0; i < urlvar_n; i++) {
         var key_i = urlvar_keys[i];
         var temp_obj = {};
@@ -109,7 +157,7 @@ var trial_share_pre = {
     post_trial_gap: function () {
         return random_choice(itis)
     },
-    stimulus_width: 600, 
+    stimulus_width: stim_width, 
     on_finish: function (data) {
         data.block = 'block1-share'
         data.event = 'response';
@@ -144,16 +192,10 @@ var trial_share_pre_procedure = {
 
 
 
-// block: accuracy treatment
+// block: treatment
 var trial_treatment_instructions = {
     type: 'instructions',
-    pages: [
-        "Now you'll take a short break." + 
-        "<p>During this break, we would like to pretest an actual news headline for future studies.</p>" +
-        "<p>We are interested in whether people think it is <strong>accurate or not</strong>.</p>" +
-        "<p>We only need you to give your opinion about the <strong>accuracy of a single headline</strong>.</p>" + 
-        "<p>After that, you will continue on to the task you were working on just now.</p> ",
-    ],
+    pages: treat_instructions,
     allow_backward: false,
     button_label_next: 'Continue',
     show_clickable_nav: true
@@ -167,11 +209,11 @@ var trial_treatment = {
     },
     trial_duration: rt_deadline,
     choices: responses_accuracy_options,
-    prompt: "To the best of your knowledge, is the above headline <strong>accurate</strong>?",
+    prompt: treat_prompt,
     post_trial_gap: function () {
         return random_choice(itis)
     },
-    stimulus_width: 500,
+    stimulus_width: stim_width,
     button_html: [
         '<button class="jspsych-btn" style="position:relative; left:-70px; top:100px">%choice%</button>',
         '<button class="jspsych-btn" style="position:relative; left:70px; top:100px">%choice%</button>'
@@ -202,8 +244,50 @@ var trial_treatment_procedure = {
 
 
 
-// TODO 
+
+
+
+
+
+
+
 // block: post-treatment
+var trial_share_post = {
+    type: 'image-button-response',
+    stimulus: jsPsych.timelineVariable("img_path"),
+    data: {
+        img_category: jsPsych.timelineVariable("img_category"),
+        veracity: jsPsych.timelineVariable("veracity"),
+    },
+    trial_duration: rt_deadline,
+    choices: responses_share_options,
+    post_trial_gap: function () {
+        return random_choice(itis)
+    },
+    stimulus_width: stim_width,
+    on_finish: function (data) {
+        data.block = 'block2-share'
+        data.event = 'response';
+        current_trial += 1;
+        data.trial = current_trial;
+        if (data.button_pressed) {
+            data.choice_text = responses_share_options[1];
+        } else {
+            data.choice_text = responses_share_options[0];
+        }
+        data.choice = responses_share[data.choice_text]
+        console.log("Veracity: " + data.veracity);
+        console.log("Share: " + data.choice);
+    }
+}
+
+var trial_share_post_procedure = {
+    timeline: [trial_share_post],
+    timeline_variables: stimuli_post,
+    repetitions: 1
+}
+
+
 
 
 
@@ -224,6 +308,7 @@ var trial_treatment_procedure = {
 timeline.push(trial_share_pre_procedure)
 timeline.push(trial_treatment_instructions)
 timeline.push(trial_treatment_procedure)
+timeline.push(trial_share_post_procedure)
 
 
 
