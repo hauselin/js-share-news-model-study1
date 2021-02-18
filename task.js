@@ -1,14 +1,14 @@
-const taskinfo = {
+var taskinfo = {
     type: 'study', // 'task', 'survey', or 'study'
     uniquestudyid: 'js-share-news-model-study1', // unique task id: must be IDENTICAL to directory name
-    desc: 'accuracy-funny-nudge', // brief description of task
-    condition: 'between-within-design', // experiment/task condition
+    desc: 'accuracy-funny-nudge-between-within-design', // brief description of task
+    condition: '', // experiment/task condition
     redirect_url: false // set to false if no redirection required
 };
 
 // debug parameters
 const debug = true;
-const debug_n = 5; // no. of trials to present during debug
+const debug_n = 3; // no. of trials to present during debug
 const debug_treat_condition = 'funny'  // funny or accuracy
 
 // DEFINE TASK PARAMETERS
@@ -20,8 +20,10 @@ var n_stim = {
     'pre_real': 20,
     "post_fake": 20,
     'post_real': 20,
-    'n_treat': 1
+    'n_treat': 1,
+    'n_practice': 2,
 };
+var include = 1;
 var current_trial = 0; 
 
 // counterbalance/randomize response options
@@ -50,7 +52,9 @@ var stimuli_post = stimuli_fake.slice(stimuli_fake.length / 2, stimuli_fake.leng
 stimuli_post.map(i => i.category = "block2-post")
 stimuli_post = jsPsych.randomization.repeat(stimuli_post, 1);  // shuffle
 // treatment stim
-var stimuli_treat = stimuli[stimuli.length - 1]
+var stimuli_treat = [stimuli[stimuli.length - 1]];
+// practice stim
+var stimuli_practice = stimuli.slice(stimuli.length - n_stim['n_practice'], stimuli.length);
 
 if (debug) {
     stimuli_pre = stimuli_pre.slice(0, debug_n);
@@ -88,8 +92,7 @@ var date = new Date()
 var subject_id = jsPsych.randomization.randomID(5) + "_" + date.getTime()
 console.log("subject ID: " + subject_id);
 
-
-
+// assign condition
 if (debug) {
     var treat_instructions = treat_instructions[debug_treat_condition]
     var treat_prompt = treat_prompt[debug_treat_condition]
@@ -104,6 +107,7 @@ if (debug) {
     var treat_instructions = treat_instructions[condition];
     var treat_prompt = treat_prompt[condition]
 }
+taskinfo.condition = condition;
 console.log("CONDITION: " + condition);
 
 
@@ -115,7 +119,7 @@ jsPsych.data.addProperties({
     uniquestudyid: taskinfo.uniquestudyid,
     desc: taskinfo.desc,
     condition: taskinfo.condition,
-    // info_: info_,
+
 });
 
 // add url parameters
@@ -140,11 +144,166 @@ var timeline = [];  // create experiment timeline
 
 
 // TODO start instructions and screener
+var instructions_start = {
+    type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
+    pages: ["First, we have a few questions about social media use."],
+}
+
+var socialmedia_content_share = {
+    type: 'survey-multi-select',
+    questions: [
+        {
+            prompt: "Which of these types of content would you consider sharing on social media (if any)?",
+            options: jsPsych.randomization.repeat(["Political news", "Sports news", 'Celebrity news', "Science/technology news", "Business news"], 1).concat(['Other']),
+            horizontal: false,
+            required: true,
+            name: 'social_media_content_share'
+        },
+    ],
+    on_finish: function (data) {
+        data.event = 'prescreen';
+        data.block = 'social_media_content_share';
+        data.choice = JSON.parse(data.responses)[data.block];
+    },
+};
+
+var socialmedia_content_share_other = {
+    timeline: [{
+        type: 'survey-text',
+        questions: [{ prompt: 'What other kinds of content would you consider sharing on social media?', columns: 30, required: true, name: 'social_media_content_share_other' }],
+    }],
+    conditional_function: function () {
+        var data = jsPsych.data.get().last(1).values()[0];
+        console.log(data.choice)
+        if (data.choice.includes('Other')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+} 
+
+
+var socialmedia_account = {
+    type: 'survey-multi-select',
+    questions: [
+        {
+            prompt: "What type of social media accounts do you use (if any)?",
+            options: jsPsych.randomization.repeat(["Facebook", "Twitter", "Snapchat", "Instagram", "WhatsApp"], 1).concat(['Other']),
+            horizontal: false,
+            required: true,
+            name: 'social_media_account'
+        },
+    ],
+    on_finish: function (data) {
+        data.event = 'prescreen';
+        data.block = 'social_media_account';
+        data.choice = JSON.parse(data.responses)[data.block];
+    }
+};
+
+var socialmedia_account_other = {
+    timeline: [{
+        type: 'survey-text',
+        questions: [{ prompt: 'What other types of social media accounts do you use?', columns: 30, required: true, name: 'social_media_account_other' }],
+    }],
+    conditional_function: function () {
+        var data = jsPsych.data.get().last(1).values()[0];
+        console.log(data.choice)
+        if (data.choice.includes('Other')) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+} 
+
+
+
+
+
+
+// TODO COVID concern
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// screen
+var screen1 = {
+    type: 'survey-multi-select',
+    premable: 'hey',
+    questions: [
+        {
+            prompt:
+                '<p style="text-align:left;">' +
+                'When a big news story breaks, people often go online to get up-to-the-minute details on what is going on. We want to know which websites people trust to get this information. We also want to know if people are paying attention to the question. Please ignore the question and select FoxNews.com and NBC.com as your two answers.<br><br>When there is a big news story, which is the one news website you would visit first? (Please choose only one):' +
+                '</p',
+            options: jsPsych.randomization.repeat(["New York Times website", "Yahoo! News", "Huffington Post", "NBC.com", "CNN.com", "USA Today Website", "FoxNews.com", "Google News"], 1).concat(['Other']),
+            horizontal: true,
+            required: true,
+            name: 'screen1'
+        },
+    ],
+    on_finish: function (data) {
+        data.event = 'prescreen';
+        data.block = 'screen1';
+        data.choice = JSON.parse(data.responses)[data.block];
+        if (data.choice.includes("FoxNews.com") && data.choice.includes("NBC.com")) {
+            include = 1;
+        } else {
+            include = 0;
+        }
+        console.log("include: " + include);
+    },
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 // block: pre-treatment
+var instructions_pre = {
+    type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
+    pages: ["You will be presented with a set of news headlines and from social media.",
+        "We are interested in the extent to which you would consider sharing them on social media if you had seen them there."]
+}
+
 var trial_share_pre = {
     type: 'image-button-response',
     stimulus: jsPsych.timelineVariable("img_path"),
@@ -168,9 +327,8 @@ var trial_share_pre = {
         } else {
             data.choice_text = responses_share_options[0];
         }
-        data.choice = responses_share[data.choice_text]
-        console.log("Veracity: " + data.veracity);
-        console.log("Share: " + data.choice);
+        data.choice = responses_share[data.choice_text];
+        console.log("trial " + current_trial + "; veracity: " + data.veracity + ", share: " + data.choice);
     }
 }
 
@@ -180,7 +338,21 @@ var trial_share_pre_procedure = {
     repetitions: 1
 }
 
-
+// deepcopy practice trials
+var trial_pre_procedure_practice = jsPsych.utils.deepCopy(trial_share_pre_procedure);
+trial_pre_procedure_practice['timeline_variables'] = stimuli_practice;
+delete trial_pre_procedure_practice['timeline'][0].on_finish;
+trial_pre_procedure_practice['timeline'][0].on_finish = function (data) {
+    data.block = 'block1-share'
+    data.event = 'practice';
+    if (data.button_pressed) {
+        data.choice_text = responses_share_options[1];
+    } else {
+        data.choice_text = responses_share_options[0];
+    }
+    data.choice = responses_share[data.choice_text];
+    console.log("PRACTICE! veracity: " + data.veracity + ", share: " + data.choice);
+}
 
 
 
@@ -211,7 +383,7 @@ var trial_treatment = {
     choices: responses_accuracy_options,
     prompt: treat_prompt,
     post_trial_gap: function () {
-        return random_choice(itis)
+        return 1500;
     },
     stimulus_width: stim_width,
     button_html: [
@@ -229,13 +401,13 @@ var trial_treatment = {
             data.choice_text = responses_accuracy_options[0];
         }
         data.choice = responses_accuracy[data.choice_text]
-        console.log('Accuracy: ' + data.choice);
+        console.log('response: ' + data.choice);
     }
 }
 
 var trial_treatment_procedure = {
     timeline: [trial_treatment],
-    timeline_variables: [stimuli_treat],
+    timeline_variables: stimuli_treat,
     repetitions: 1
 }
 
@@ -275,9 +447,8 @@ var trial_share_post = {
         } else {
             data.choice_text = responses_share_options[0];
         }
-        data.choice = responses_share[data.choice_text]
-        console.log("Veracity: " + data.veracity);
-        console.log("Share: " + data.choice);
+        data.choice = responses_share[data.choice_text];
+        console.log("trial " + current_trial + "; veracity: " + data.veracity + ", share: " + data.choice);
     }
 }
 
@@ -305,10 +476,18 @@ var trial_share_post_procedure = {
 
 
 // push objects into timeline
-timeline.push(trial_share_pre_procedure)
-timeline.push(trial_treatment_instructions)
-timeline.push(trial_treatment_procedure)
-timeline.push(trial_share_post_procedure)
+// timeline.push(instructions_start)
+// timeline.push(socialmedia_content_share)
+// timeline.push(socialmedia_content_share_other)
+// timeline.push(socialmedia_account)
+// timeline.push(socialmedia_account_other)
+timeline.push(screen1)
+// timeline.push(instructions_pre)
+// timeline.push(trial_pre_procedure_practice)
+// timeline.push(trial_share_pre_procedure)
+// timeline.push(trial_treatment_instructions)
+// timeline.push(trial_treatment_procedure)
+// timeline.push(trial_share_post_procedure)
 
 
 
@@ -319,6 +498,10 @@ jsPsych.init({
     timeline: timeline,
     preload_images: stimuli.map(i => i.img_path),
     on_finish: function () {
+        jsPsych.data.get().addToAll({ // add parameters to all trials
+            total_time: jsPsych.totalTime() / 60000,
+            include: include
+        });
         if (debug) {
             jsPsych.data.displayData();
         }
