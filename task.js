@@ -7,7 +7,7 @@ var taskinfo = {
 };
 
 // debug parameters
-const debug = true;
+const debug = false;
 const debug_n = 3; // no. of trials to present during debug
 const debug_treat_condition = 'funny'  // funny or accuracy
 
@@ -244,9 +244,7 @@ var covid_concern = {
 		data: {
 			block: jsPsych.timelineVariable('name') 
 		},
-		labels: function () {
-			return jsPsych.timelineVariable('labels')
-		},
+		labels: jsPsych.timelineVariable('labels'),
 		slider_width: 500,
 		min: 0, max: 100, start: 50, step: 1.0, require_movement: true,
 		on_finish: function (data) {
@@ -1189,7 +1187,7 @@ var redirect = {
 // timeline.push(socialmedia_content_share_other)
 // timeline.push(socialmedia_account)
 // timeline.push(socialmedia_account_other)
-// timeline.push(covid_concern)
+timeline.push(covid_concern)
 
 // timeline.push(screen1)
 
@@ -1239,9 +1237,9 @@ var redirect = {
 // timeline.push(instructions_debrief)
 // timeline.push(debrief_headlines_procedure)
 
-timeline.push(comments_procedure)
+// timeline.push(comments_procedure)
 
-timeline.push(redirect)
+// timeline.push(redirect)
 
 
 
