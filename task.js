@@ -7,7 +7,7 @@ var taskinfo = {
 };
 
 // debug parameters
-const debug = false;
+const debug = true;
 const debug_n = 3; // no. of trials to present during debug
 const debug_treat_condition = 'funny'  // funny or accuracy
 
@@ -187,6 +187,11 @@ var socialmedia_content_share_other = {
 	timeline: [{
 		type: 'survey-text',
 		questions: [{ prompt: 'What other kinds of content would you consider sharing on social media?', columns: 30, required: true, name: 'social_media_content_share_other' }],
+		on_finish: function (data) {
+			data.event = 'prescreen';
+			data.block = 'social_media_content_share_other';
+			data.resp = JSON.parse(data.responses)[data.block];
+		}
 	}],
 	conditional_function: function () {
 		var data = jsPsych.data.get().last(1).values()[0];
@@ -221,6 +226,11 @@ var socialmedia_account_other = {
 	timeline: [{
 		type: 'survey-text',
 		questions: [{ prompt: 'What other types of social media accounts do you use?', columns: 30, required: true, name: 'social_media_account_other' }],
+		on_finish: function (data) {
+			data.event = 'prescreen';
+			data.block = 'social_media_account_other';
+			data.resp = JSON.parse(data.responses)[data.block];
+		}
 	}],
 	conditional_function: function () {
 		var data = jsPsych.data.get().last(1).values()[0];
@@ -919,15 +929,50 @@ var demo_houseincome = {
 
 var demo_ethnicity_options = ['White/Caucasian', 'Asian', 'Black or African American', 'Native Hawaiian/Pacific Islander', 'American Indian/Alask Native', 'Other'];
 var demo_ethnicity = {
-	type: 'html-button-response',
-	stimulus: 'Please choose whichever ethnicity that you identify with (you may choose more than one option.<br><br>',
-	choices: demo_ethnicity_options,
+	type: 'survey-multi-select',
+	questions: [
+		{
+			prompt: "Please choose whichever ethnicity that you identify with (you may choose more than one option).",
+			options: demo_ethnicity_options,
+			horizontal: false,
+			required: true,
+			name: 'ethnicity'
+		},
+	],
 	on_finish: function (data) {
 		data.event = 'ethnicity';
 		data.block = 'demographics';
-		data.resp = demo_ethnicity_options[data.button_pressed];
+		data.resp = JSON.stringify(JSON.parse(data.responses)[data.event]);
+	},
+};
+
+var demo_ethnicity_other = {
+	timeline: [{
+		type: 'survey-text',
+		questions: [{ prompt: 'What other ethnicities do you identify with?', columns: 30, required: true, name: 'demo_ethnicity_other' }],
+		on_finish: function (data) {
+			data.event = 'ethnicity_other';
+			data.block = 'demographics_other';
+			data.resp = JSON.parse(data.responses)['demo_ethnicity_other'];
 	}
-}
+	}],
+	conditional_function: function () {
+		var data = jsPsych.data.get().last(1).values()[0];
+		console.log(data.choice)
+		if (data.resp.includes('Other')) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+} 
+
+
+
+
+
+
+
 
 var demo_english_options = ['no', 'yes'];
 var demo_english = {
@@ -1187,7 +1232,7 @@ var redirect = {
 // timeline.push(socialmedia_content_share_other)
 // timeline.push(socialmedia_account)
 // timeline.push(socialmedia_account_other)
-timeline.push(covid_concern)
+// timeline.push(covid_concern)
 
 // timeline.push(screen1)
 
@@ -1224,6 +1269,7 @@ timeline.push(covid_concern)
 // timeline.push(demo_education)
 // timeline.push(demo_houseincome)
 // timeline.push(demo_ethnicity)
+// timeline.push(demo_ethnicity_other)
 // timeline.push(demo_english)
 // timeline.push(demo_politicalpos)
 // timeline.push(demo_politicalpref)
