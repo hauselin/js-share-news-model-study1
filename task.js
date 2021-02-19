@@ -1041,10 +1041,10 @@ var demo_economicissues = {
 }
 
 
-var demo_potus2020_options = ['Joseph Biden', 'Donald Trump', 'Other candidate', 'Did not potus for reasons outside of my control', 'Did not potus but could have', 'Did not potus out of protest'];
+var demo_potus2020_options = ['Joseph Biden', 'Donald Trump', 'Other candidate', 'Did not vote for reasons outside of my control', 'Did not vote but could have', 'Did not vote out of protest'];
 var demo_potus2020 = {
 	type: 'html-button-response',
-	stimulus: 'Who did you potus for in the 2020 Presidential Election?<br><br><strong>Reminder: This survey is anonymous.</strong><br><br>',
+	stimulus: 'Who did you vote for in the 2020 Presidential Election?<br><br><strong>Reminder: This survey is anonymous.</strong><br><br>',
 	choices: demo_potus2020_options,
 	on_finish: function (data) {
 		data.event = 'potus2020';
