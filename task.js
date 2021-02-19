@@ -1146,18 +1146,15 @@ var instructions_debrief = {
 }
 
 var debrief_headlines = {
-	type: 'image-keyboard-response',
-	stimulus: jsPsych.timelineVariable('img_path'),
-	choices: jsPsych.ALL_KEYS,
-	prompt: '<br>This headline is <strong>TRUE</strong>.<br>Press any key to continue.',
-	stimulus_width: stim_width * 0.8,
-	maintain_aspect_ratio: true,
+	type: 'instructions',
+	button_label_next: 'Previous', button_label_previous: "Next",
+	show_clickable_nav: true,
+	show_page_number: true, 
+	page_label: "True Headline",
+	pages: stimuli_real.map(i => '<img src="' + i.img_path + '">')
 }
 
-var debrief_headlines_procedure = {
-	timeline: [debrief_headlines],
-	timeline_variables: stimuli_real,
-}
+
 
 
 
@@ -1227,65 +1224,65 @@ var redirect = {
 // push objects into timeline
 
 
-// timeline.push(instructions_start)
-// timeline.push(socialmedia_content_share)
-// timeline.push(socialmedia_content_share_other)
-// timeline.push(socialmedia_account)
-// timeline.push(socialmedia_account_other)
-// timeline.push(covid_concern)
+timeline.push(instructions_start)
+timeline.push(socialmedia_content_share)
+timeline.push(socialmedia_content_share_other)
+timeline.push(socialmedia_account)
+timeline.push(socialmedia_account_other)
+timeline.push(covid_concern)
 
-// timeline.push(screen1)
+timeline.push(screen1)
 
-// timeline.push(instructions_pre)
-// timeline.push(trial_pre_procedure_practice)
-// timeline.push(trial_share_pre_procedure)
-// timeline.push(trial_treatment_instructions)
-// timeline.push(trial_treatment_procedure)
-// timeline.push(trial_share_post_procedure)
+timeline.push(instructions_pre)
+timeline.push(trial_pre_procedure_practice)
+timeline.push(trial_share_pre_procedure)
+timeline.push(trial_treatment_instructions)
+timeline.push(trial_treatment_procedure)
+timeline.push(trial_share_post_procedure)
 
-// timeline.push(instructions_crt)
-// timeline.push(crt_procedure)
-// timeline.push(crt_check)
+timeline.push(instructions_crt)
+timeline.push(crt_procedure)
+timeline.push(crt_check)
 
-// timeline.push(screen2)
+timeline.push(screen2)
 
-// timeline.push(media_share_accuracy)
-// timeline.push(media_criticism)
-// timeline.push(media_fair)
-// timeline.push(instructions_media_trust)
-// timeline.push(media_trust)
+timeline.push(media_share_accuracy)
+timeline.push(media_criticism)
+timeline.push(media_fair)
+timeline.push(instructions_media_trust)
+timeline.push(media_trust)
 
-// timeline.push(instructions_screen)
-// timeline.push(screen3)
+timeline.push(instructions_screen)
+timeline.push(screen3)
 
-// timeline.push(instructions_support_economic_inequality)
-// timeline.push(support_economic_inequality_procedure)
+timeline.push(instructions_support_economic_inequality)
+timeline.push(support_economic_inequality_procedure)
 
-// timeline.push(instructions_subjective_inequality)
-// timeline.push(subjective_inequality_procedure)
+timeline.push(instructions_subjective_inequality)
+timeline.push(subjective_inequality_procedure)
 
-// timeline.push(demo_age)
-// timeline.push(demo_gender)
-// timeline.push(demo_education)
-// timeline.push(demo_houseincome)
-// timeline.push(demo_ethnicity)
-// timeline.push(demo_ethnicity_other)
-// timeline.push(demo_english)
-// timeline.push(demo_politicalpos)
-// timeline.push(demo_politicalpref)
-// timeline.push(demo_socialissues)
-// timeline.push(demo_economicissues)
-// timeline.push(demo_potus2020)
+timeline.push(demo_age)
+timeline.push(demo_gender)
+timeline.push(demo_education)
+timeline.push(demo_houseincome)
+timeline.push(demo_ethnicity)
+timeline.push(demo_ethnicity_other)
+timeline.push(demo_english)
+timeline.push(demo_politicalpos)
+timeline.push(demo_politicalpref)
+timeline.push(demo_socialissues)
+timeline.push(demo_economicissues)
+timeline.push(demo_potus2020)
 
-// timeline.push(random_resp)
-// timeline.push(google_resp)
+timeline.push(random_resp)
+timeline.push(google_resp)
 
-// timeline.push(instructions_debrief)
-// timeline.push(debrief_headlines_procedure)
+timeline.push(instructions_debrief)
+timeline.push(debrief_headlines)
 
-// timeline.push(comments_procedure)
+timeline.push(comments_procedure)
 
-// timeline.push(redirect)
+timeline.push(redirect)
 
 
 

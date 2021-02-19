@@ -47,14 +47,14 @@ var items_crt = [
         "answer_correct": "Emily",
         "answer_intuitive": "June"
     },
-    {
-        "q": 7,
-        "desc": "Like all animals, cows need to eat and drink. What do adult cows generally drink?",
-        "subscale": "crt",
-        "reverse": 0,
-        "answer_correct": "water",
-        "answer_intuitive": "milk"
-    },
+    // {
+    //     "q": 7,
+    //     "desc": "Like all animals, cows need to eat and drink. What do adult cows generally drink?",
+    //     "subscale": "crt",
+    //     "reverse": 0,
+    //     "answer_correct": "water",
+    //     "answer_intuitive": "milk"
+    // },
     // {
     //     "q": 8,
     //     "desc": "A bat and a ball cost $1.10 in total. The bat costs $1.00 more than the ball. How many dollars does the ball cost? (Please enter a number)",
