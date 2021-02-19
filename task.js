@@ -7,8 +7,8 @@ var taskinfo = {
 };
 
 // debug parameters
-const debug = true;
-const debug_n = 3; // no. of trials to present during debug
+const debug = false;
+const debug_n = 4; // no. of trials to present during debug
 const debug_treat_condition = 'funny'  // funny or accuracy
 
 // DEFINE TASK PARAMETERS
@@ -25,6 +25,7 @@ var n_stim = {
 };
 var include = 1;  // to keep track of whether people pass/fail attention check/screens
 var current_trial = 0;  // trial counter for sharing trials
+var current_iti = 100; // random value on each trial
 
 // counterbalance/randomize response options
 var responses_share = {
@@ -343,6 +344,7 @@ var screen1 = {
 
 
 // block: pre-treatment
+
 var instructions_pre = {
 	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
 	pages: ["In a moment, you will be presented with a set of news headlines and from social media.",
@@ -370,9 +372,6 @@ var trial_share_pre = {
 	},
 	trial_duration: rt_deadline,
 	choices: responses_share_options,
-	post_trial_gap: function () {
-		return random_choice(itis)
-	},
 	stimulus_width: stim_width, 
 	on_finish: function (data) {
 		data.block = 'block1-share'
@@ -386,7 +385,10 @@ var trial_share_pre = {
 		}
 		data.choice = responses_share[data.choice_text];
 		console.log("trial " + current_trial + "; veracity: " + data.veracity + ", share: " + data.choice);
-	}
+		current_iti = random_choice(itis);
+		data.iti = current_iti;
+	},
+	post_trial_gap: function () {return current_iti}
 }
 
 var trial_share_pre_procedure = {
@@ -409,6 +411,8 @@ trial_pre_procedure_practice['timeline'][0].on_finish = function (data) {
 	}
 	data.choice = responses_share[data.choice_text];
 	console.log("PRACTICE! veracity: " + data.veracity + ", share: " + data.choice);
+	current_iti = random_choice(itis);
+	data.iti = current_iti;
 }
 
 
@@ -453,7 +457,7 @@ var trial_treatment = {
 	choices: responses_accuracy_options,
 	prompt: treat_prompt,
 	post_trial_gap: function () {
-		return 1500;
+		return 2000;
 	},
 	stimulus_width: stim_width,
 	button_html: [
@@ -515,9 +519,6 @@ var trial_share_post = {
 	},
 	trial_duration: rt_deadline,
 	choices: responses_share_options,
-	post_trial_gap: function () {
-		return random_choice(itis)
-	},
 	stimulus_width: stim_width,
 	on_finish: function (data) {
 		data.block = 'block2-share'
@@ -531,7 +532,10 @@ var trial_share_post = {
 		}
 		data.choice = responses_share[data.choice_text];
 		console.log("trial " + current_trial + "; veracity: " + data.veracity + ", share: " + data.choice);
-	}
+		current_iti = random_choice(itis);
+		data.iti = current_iti;
+	},
+	post_trial_gap: function () { return current_iti }
 }
 
 var trial_share_post_procedure = {
