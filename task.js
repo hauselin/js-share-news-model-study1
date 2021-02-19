@@ -3,7 +3,7 @@ var taskinfo = {
 	uniquestudyid: 'js-share-news-model-study1', // unique task id: must be IDENTICAL to directory name
 	desc: 'accuracy-funny-nudge-between-within-design', // brief description of task
 	condition: '', // experiment/task condition
-	redirect_url: "https://www.google.com" // set to false if no redirection required
+	redirect_url: "https://www.cognition.run/" // set to false if no redirection required
 };
 
 // debug parameters
@@ -23,8 +23,8 @@ var n_stim = {
 	'n_treat': 1,
 	'n_practice': 2,
 };
-var include = 1;
-var current_trial = 0; 
+var include = 1;  // to keep track of whether people pass/fail attention check/screens
+var current_trial = 0;  // trial counter for sharing trials
 
 // counterbalance/randomize response options
 var responses_share = {
