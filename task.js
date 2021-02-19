@@ -3,7 +3,7 @@ var taskinfo = {
 	uniquestudyid: 'js-share-news-model-study1', // unique task id: must be IDENTICAL to directory name
 	desc: 'accuracy-funny-nudge-between-within-design', // brief description of task
 	condition: '', // experiment/task condition
-	redirect_url: false // set to false if no redirection required
+	redirect_url: "https://www.google.com" // set to false if no redirection required
 };
 
 // debug parameters
@@ -1155,7 +1155,11 @@ var comments_procedure = {
 
 
 
-
+var redirect = {
+    type: 'html-keyboard-response',
+    stimulus: '<p>You have completed the survey.</p><p><a href="' + taskinfo.redirect_url + '">Please click here to submit your responses.</a></p>',
+    choices: jsPsych.NO_KEYS  // prevents accidentally skipping this trial
+}
 
 
 
@@ -1211,11 +1215,11 @@ var comments_procedure = {
 // timeline.push(instructions_screen)
 // timeline.push(screen3)
 
-timeline.push(instructions_support_economic_inequality)
-timeline.push(support_economic_inequality_procedure)
+// timeline.push(instructions_support_economic_inequality)
+// timeline.push(support_economic_inequality_procedure)
 
-timeline.push(instructions_subjective_inequality)
-timeline.push(subjective_inequality_procedure)
+// timeline.push(instructions_subjective_inequality)
+// timeline.push(subjective_inequality_procedure)
 
 // timeline.push(demo_age)
 // timeline.push(demo_gender)
@@ -1235,10 +1239,9 @@ timeline.push(subjective_inequality_procedure)
 // timeline.push(instructions_debrief)
 // timeline.push(debrief_headlines_procedure)
 
-// timeline.push(comments_procedure)
+timeline.push(comments_procedure)
 
-
-
+timeline.push(redirect)
 
 
 
@@ -1260,9 +1263,9 @@ jsPsych.init({
 	on_finish: function () {
 		jsPsych.data.get().addToAll({ // add parameters to all trials
 			total_time: jsPsych.totalTime() / 60000,
-		});
+        });
 		if (debug) {
 			jsPsych.data.displayData();
-		}
+		} 
 	}
 })
