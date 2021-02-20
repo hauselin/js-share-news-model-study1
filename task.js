@@ -291,11 +291,11 @@ var screen1 = {
 	questions: [
 		{
 			prompt:
-				'<p style="text-align:left;">' +
-				'When a big news story breaks, people often go online to get up-to-the-minute details on what is going on. We want to know which websites people trust to get this information. We also want to know if people are paying attention to the question. Please ignore the question and select FoxNews.com and NBC.com as your two answers.<br><br>When there is a big news story, which is the one news website you would visit first? (Please choose only one):' +
-				'</p>',
+				// '<p style="text-align:left;">' +
+				'When a big news story breaks, people often go online to get up-to-the-minute details on what is going on. We want to know which websites people trust to get this information. We also want to know if people are paying attention to the question. Please ignore the question and select FoxNews.com and NBC.com as your two answers.<br><br>When there is a big news story, which is the one news website you would visit first? (Please choose only one):',
+				// '</p>',
 			options: jsPsych.randomization.repeat(["New York Times website", "Yahoo! News", "Huffington Post", "NBC.com", "CNN.com", "USA Today Website", "FoxNews.com", "Google News"], 1).concat(['Other']),
-			horizontal: true,
+			horizontal: false,
 			required: true,
 			name: 'screen1'
 		},
@@ -388,7 +388,8 @@ var trial_share_pre = {
 		current_iti = random_choice(itis);
 		data.iti = current_iti;
 	},
-	post_trial_gap: function () {return current_iti}
+	post_trial_gap: function () {return current_iti},
+	render_on_canvas: false
 }
 
 var trial_share_pre_procedure = {
@@ -476,7 +477,8 @@ var trial_treatment = {
 		}
 		data.choice = responses_accuracy[data.choice_text]
 		console.log('response: ' + data.choice);
-	}
+	},
+	render_on_canvas: false
 }
 
 var trial_treatment_procedure = {
@@ -535,7 +537,8 @@ var trial_share_post = {
 		current_iti = random_choice(itis);
 		data.iti = current_iti;
 	},
-	post_trial_gap: function () { return current_iti }
+	post_trial_gap: function () { return current_iti },
+	render_on_canvas: false
 }
 
 var trial_share_post_procedure = {
@@ -756,7 +759,7 @@ var media_trust = {
 // screen 
 var instructions_screen = {
     type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
-    pages: ["Next, you will see a series of statements.<br><br>Please tell us whether you agree or disagree with each statement. "]
+    pages: ["Next, you will see a series of statements.<br><br>Please tell us whether you agree or disagree with each statement."]
 }
 
 var labels5 = { "agree strongly": 2, "agree": 1, "neither agree nor disagree": 0, "disagree": -1, "disagree strongly": -2 }
@@ -804,7 +807,7 @@ var screen3 = {
 // support_economic_inequality
 var instructions_support_economic_inequality = {
     type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
-    pages: ["Next, you will see different statements.<br><br>Please indicate your level of agreement with each statement"],
+    pages: ["Next, you will see different statements.<br><br>Please indicate your level of agreement with each statement."],
 }
 
 var support_economic_inequality_labels = ['strongly disagree', 'strongly agree']
@@ -1151,7 +1154,7 @@ var instructions_debrief = {
 
 var debrief_headlines = {
 	type: 'instructions',
-	button_label_next: 'Previous', button_label_previous: "Next",
+	button_label_next: 'Next (click or right key)', button_label_previous: "Previous (click or left key)",
 	show_clickable_nav: true,
 	show_page_number: true, 
 	page_label: "True Headline",
@@ -1226,7 +1229,6 @@ var redirect = {
 
 
 // push objects into timeline
-
 
 timeline.push(instructions_start)
 timeline.push(socialmedia_content_share)
@@ -1305,6 +1307,7 @@ timeline.push(redirect)
 jsPsych.init({
 	timeline: timeline,
 	preload_images: stimuli.map(i => i.img_path),
+	experiment_width: stim_width + 100,
 	on_finish: function () {
 		jsPsych.data.get().addToAll({ // add parameters to all trials
 			total_time: jsPsych.totalTime() / 60000,
