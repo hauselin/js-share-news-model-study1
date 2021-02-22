@@ -1149,12 +1149,12 @@ var google_resp = {
 // debrief
 var instructions_debrief = {
 	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
-	pages: ["You're reaching the end of the survey.<br>Earlier on, we showed you a variety of headlines.<br>Half of them were false and half of them were true.<br>You will see all the <strong>TRUE</strong> headlines again; any headlines not shown were FALSE.<br><br>You must review all the <strong>TRUE</strong> headlines to submit this survey."]
+	pages: ["You're reaching the end of the survey.<br>Earlier on, we showed you a variety of headlines.<br>Half of them were false and half of them were true.<br>You will see all the <strong>TRUE</strong> headlines again; any headlines not shown were FALSE.<br><br>You must review all the <strong>TRUE</strong> headlines to submit this survey.<br>You can use your mouse or the left/right arrow keys to review."]
 }
 
 var debrief_headlines = {
 	type: 'instructions',
-	button_label_next: 'Next (click or right key)', button_label_previous: "Previous (click or left key)",
+	button_label_next: '', button_label_previous: "",
 	show_clickable_nav: true,
 	show_page_number: true, 
 	page_label: "True Headline",
@@ -1307,7 +1307,7 @@ timeline.push(redirect)
 jsPsych.init({
 	timeline: timeline,
 	preload_images: stimuli.map(i => i.img_path),
-	experiment_width: stim_width + 100,
+	experiment_width: stim_width + 200,
 	on_finish: function () {
 		jsPsych.data.get().addToAll({ // add parameters to all trials
 			total_time: jsPsych.totalTime() / 60000,
