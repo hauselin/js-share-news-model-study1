@@ -8,7 +8,7 @@ var taskinfo = {
 
 // debug parameters
 const debug = false;
-const debug_n = 4; // no. of trials to present during debug
+const debug_n = 3; // no. of trials to present during debug
 const debug_treat_condition = 'funny'  // funny or accuracy
 
 // DEFINE TASK PARAMETERS
@@ -60,6 +60,7 @@ var stimuli_practice = stimuli.slice(stimuli.length - n_stim['n_practice'], stim
 if (debug) {
 	stimuli_pre = stimuli_pre.slice(0, debug_n);
 	stimuli_post = stimuli_post.slice(0, debug_n);
+	stimuli_real = stimuli_pre.filter(i => i.veracity == 'real').concat(stimuli_post.filter(i => i.veracity == 'real'));
 }
 
 // treatment instructions
@@ -160,10 +161,9 @@ var timeline = [];  // create experiment timeline
 
 
 
-
 var instructions_start = {
 	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
-	pages: ["First, we have a few questions about social media use."],
+	pages: ["To have the best experience, we highly recommend using <strong>Google Chrome</strong> or <strong>FireFox</strong> to complete this survey.", "First, we have a few questions about social media use."],
 }
 
 var socialmedia_content_share = {
@@ -203,8 +203,9 @@ var socialmedia_content_share_other = {
 			return false;
 		}
 	}
-} 
+}
 
+var accounts = [];
 var socialmedia_account = {
 	type: 'survey-multi-select',
 	questions: [
@@ -220,6 +221,8 @@ var socialmedia_account = {
 		data.event = 'prescreen';
 		data.block = 'social_media_account';
 		data.choice = JSON.parse(data.responses)[data.block];
+		accounts = accounts.concat(data.choice);
+		// console.log(accounts);
 	}
 };
 
@@ -231,11 +234,12 @@ var socialmedia_account_other = {
 			data.event = 'prescreen';
 			data.block = 'social_media_account_other';
 			data.resp = JSON.parse(data.responses)[data.block];
+			accounts = accounts.concat(data.resp);
 		}
 	}],
 	conditional_function: function () {
 		var data = jsPsych.data.get().last(1).values()[0];
-		console.log(data.choice)
+		// console.log(data.choice)
 		if (data.choice.includes('Other')) {
 			return true;
 		} else {
@@ -244,6 +248,21 @@ var socialmedia_account_other = {
 	}
 } 
 
+var socialmedia_account_disqualify = {
+	timeline: [{
+		type: 'instructions', allow_backward: false, button_label_next: '', show_clickable_nav: false,
+		pages: ["Sorry. This survey is for people who would consider sharing political content on Twitter or Facebook. This restriction is only for this survey, so please consider completing our future surveys.<br><br>Sorry again and all the best!"],
+	}],
+	conditional_function: function () {
+		if (accounts.includes('Facebook') || accounts.includes('Twitter')) {
+			console.log('Facebook/Twitter user');
+			return false;
+		} else {
+			console.log('Disqualified. Not Facebook/Twitter user.');
+			return true;
+		}
+	}	
+}
 
 
 
@@ -1235,6 +1254,7 @@ timeline.push(socialmedia_content_share)
 timeline.push(socialmedia_content_share_other)
 timeline.push(socialmedia_account)
 timeline.push(socialmedia_account_other)
+timeline.push(socialmedia_account_disqualify)
 timeline.push(covid_concern)
 
 timeline.push(screen1)
