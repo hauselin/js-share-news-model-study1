@@ -211,7 +211,7 @@ var socialmedia_account = {
 	questions: [
 		{
 			prompt: "What type of social media accounts do you use (if any)?",
-			options: jsPsych.randomization.repeat(["Facebook", "Twitter", "Snapchat", "Instagram", "WhatsApp"], 1).concat(['Other']),
+			options: jsPsych.randomization.repeat(["Facebook", "Twitter", "Snapchat", "Instagram", "WhatsApp", "TikTok", "Parker"], 1).concat(['Other', "I don't use social media"]),
 			horizontal: false,
 			required: true,
 			name: 'social_media_account'
@@ -240,7 +240,9 @@ var socialmedia_account_other = {
 	conditional_function: function () {
 		var data = jsPsych.data.get().last(1).values()[0];
 		// console.log(data.choice)
-		if (data.choice.includes('Other')) {
+		if ((accounts.includes("I don't use social media"))) {
+			return false;
+		} else if (data.choice.includes('Other')) {
 			return true;
 		} else {
 			return false;
@@ -251,15 +253,15 @@ var socialmedia_account_other = {
 var socialmedia_account_disqualify = {
 	timeline: [{
 		type: 'instructions', allow_backward: false, button_label_next: '', show_clickable_nav: false,
-		pages: ["Sorry. This survey is for people who would consider sharing political content on Twitter or Facebook. This restriction is only for this survey, so please consider completing our future surveys.<br><br>Sorry again and all the best!"],
+		pages: ["Sorry. This survey is for people who use social media. This restriction is only for this survey, so please consider completing our future surveys.<br><br>Sorry again and all the best!"],
 	}],
 	conditional_function: function () {
-		if (accounts.includes('Facebook') || accounts.includes('Twitter')) {
-			console.log('Facebook/Twitter user');
-			return false;
-		} else {
-			console.log('Disqualified. Not Facebook/Twitter user.');
+		if (accounts.includes("I don't use social media")) {
+			console.log('Not a social media user! Disqualified.');
 			return true;
+		} else {
+			console.log('Social media user. Continue.');
+			return false;
 		}
 	}	
 }
@@ -1249,13 +1251,12 @@ var redirect = {
 
 // push objects into timeline
 
-timeline.push(instructions_start)
-timeline.push(socialmedia_content_share)
-timeline.push(socialmedia_content_share_other)
+// timeline.push(instructions_start)
+// timeline.push(socialmedia_content_share)
+// timeline.push(socialmedia_content_share_other)
 timeline.push(socialmedia_account)
 timeline.push(socialmedia_account_other)
 timeline.push(socialmedia_account_disqualify)
-timeline.push(covid_concern)
 
 timeline.push(screen1)
 
