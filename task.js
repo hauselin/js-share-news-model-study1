@@ -170,7 +170,7 @@ var socialmedia_content_share = {
 	type: 'survey-multi-select',
 	questions: [
 		{
-			prompt: "Which of these types of content would you consider sharing on social media (if any)?",
+			prompt: "Which of these types of content would you consider sharing on social media (if any)? (You can select multiple options.)",
 			options: jsPsych.randomization.repeat(["Political news", "Sports news", 'Celebrity news', "Science/technology news", "Business news"], 1).concat(['Other']),
 			horizontal: false,
 			required: true,
@@ -210,8 +210,8 @@ var socialmedia_account = {
 	type: 'survey-multi-select',
 	questions: [
 		{
-			prompt: "What type of social media accounts do you use (if any)?",
-			options: jsPsych.randomization.repeat(["Facebook", "Twitter", "Snapchat", "Instagram", "WhatsApp", "TikTok", "Parker"], 1).concat(['Other', "I don't use social media"]),
+			prompt: "What type of social media accounts do you use (if any)? (You can select multiple options.)",
+			options: jsPsych.randomization.repeat(["Facebook", "Twitter", "Snapchat", "Instagram", "WhatsApp", "TikTok", "Parler"], 1).concat(['Other', "I don't use social media"]),
 			horizontal: false,
 			required: true,
 			name: 'social_media_account'
@@ -240,7 +240,7 @@ var socialmedia_account_other = {
 	conditional_function: function () {
 		var data = jsPsych.data.get().last(1).values()[0];
 		// console.log(data.choice)
-		if ((accounts.includes("I don't use social media"))) {
+		if (accounts.includes("I don't use social media")) {
 			return false;
 		} else if (data.choice.includes('Other')) {
 			return true;
@@ -269,29 +269,6 @@ var socialmedia_account_disqualify = {
 
 
 
-var covid_concern = {
-	timeline: [{
-		type: 'html-slider-response',
-		stimulus: jsPsych.timelineVariable('desc'),
-		data: {
-			block: jsPsych.timelineVariable('name') 
-		},
-		labels: jsPsych.timelineVariable('labels'),
-		slider_width: 500,
-		min: 0, max: 100, start: 50, step: 1.0, require_movement: true,
-		on_finish: function (data) {
-			data.event = 'prescreen';
-			data.start_point = 50;
-			data.resp = Number(data.response);
-			console.log("name: " + data.block + "; response: " + data.response);
-		}
-	}],
-
-	timeline_variables: [
-		{ "desc": "How concerned are you about COVID-19 (the new coronavirus)?", "labels": ['not concerned at all', 'extremely concerned'], "name": "covid-concern"},
-		{ "desc": "How often do you proactively check the news regarding COVID-19 (the new coronavirus)?", "labels": ["never", "very often"], "name": "covid-news-freq"}],  
-	randomize_order: false
-};
 
 
 
@@ -1091,6 +1068,52 @@ var demo_potus2020 = {
 
 
 
+// social media sources
+var socialmedia_source = {
+	type: 'survey-multi-select',
+	questions: [
+		{
+			prompt: "Earlier on, when you thought about whether you would share the content, which social media source were you primarily thinking about? (You can select more than one option if you were thinking about multiple sources.)",
+			options: jsPsych.randomization.repeat(["Facebook", "Twitter", "Snapchat", "Instagram", "WhatsApp", "TikTok", "Parler"], 1).concat(['Other', "I didn't think of any source (e.g., because it isn't the sort of content I would ever share)"]),
+			horizontal: false,
+			required: true,
+			name: 'smsource'
+		},
+	],
+	on_finish: function (data) {
+		data.event = 'smsource';
+		data.block = 'smsource';
+		data.choice = JSON.parse(data.responses)[data.block];
+	}
+};
+
+var socialmedia_source_other = {
+	timeline: [{
+		type: 'survey-text',
+		questions: [{ prompt: 'What other social media sources were you thinking about?', columns: 30, required: true, name: 'social_media_source_other' }],
+		on_finish: function (data) {
+			data.event = 'smsource_other';
+			data.block = 'social_media_source_other';
+			data.resp = JSON.parse(data.responses)[data.block];
+		}
+	}],
+	conditional_function: function () {
+		var data = jsPsych.data.get().last(1).values()[0];
+		// console.log(data.choice)
+		if (data.choice.includes('Other')) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+} 
+
+
+
+
+
+
+
 
 
 
@@ -1251,9 +1274,9 @@ var redirect = {
 
 // push objects into timeline
 
-// timeline.push(instructions_start)
-// timeline.push(socialmedia_content_share)
-// timeline.push(socialmedia_content_share_other)
+timeline.push(instructions_start)
+timeline.push(socialmedia_content_share)
+timeline.push(socialmedia_content_share_other)
 timeline.push(socialmedia_account)
 timeline.push(socialmedia_account_other)
 timeline.push(socialmedia_account_disqualify)
@@ -1301,6 +1324,8 @@ timeline.push(demo_socialissues)
 timeline.push(demo_economicissues)
 timeline.push(demo_potus2020)
 
+timeline.push(socialmedia_source)
+timeline.push(socialmedia_source_other)
 timeline.push(random_resp)
 timeline.push(google_resp)
 
