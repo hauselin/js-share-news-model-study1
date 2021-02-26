@@ -166,7 +166,7 @@ var timeline = [];  // create experiment timeline
 
 
 var instructions_start = {
-	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
+	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true, allow_keys: false,
 	pages: [
 		"To have the best experience, we highly recommend using <strong>Google Chrome</strong> or <strong>FireFox</strong> to complete this survey.<br><br>You should also try to <strong>complete this survey in one sitting</strong>. If you leave this survey or closing the browser tab/window, you will have to start from the beginning again when you return to it.<br><br>Finally, <strong>avoid clicking back or forward in your browser</strong> because that will also bring you to the beginning of the survey.",
 		"First, we have a few questions about social media use."],
@@ -350,7 +350,7 @@ var screen1 = {
 // block: pre-treatment
 
 var instructions_pre = {
-	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
+	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true, allow_keys: false,
 	pages: ["In a moment, you will be presented with a set of news headlines and from social media.",
 		"We are interested in the extent to which you would consider sharing them on social media if you had seen them there."]
 }
@@ -673,47 +673,7 @@ var media_share_accuracy = {
 };
 
 
-// media
-var media_criticism_options = ['Criticism from news organizations keeps political leaders from doing their job.', 'Criticism from news organizations keeps political leaders from doing things that should not be done.'];
-var media_criticism = {
-	type: 'survey-multi-choice',
-	questions: [
-		{
-			prompt: "Some people think that by criticizing leaders, news organizations keep political leaders from doing their job. Others think that such criticism is worth it because it keeps political leaders from doing things that should not be done. Which position is closer to your opinion?",
-			options: media_criticism_options,
-			horizontal: false,
-			required: true,
-			name: 'media_criticism'
-		},
-	],
-	on_finish: function (data) {
-		data.event = 'media_criticism';
-		data.block = 'media_questions';
-		data.choice = JSON.parse(data.responses)[data.event];
-		data.resp = media_criticism_options.findIndex(i => i.includes(data.choice)) + 1;
-	},
-};
-
-// media
-var media_fair_options = ['News organizations tend to deal fairly with all sides.', 'News organizations tend to favor one side.'];
-var media_fair = {
-	type: 'survey-multi-choice',
-	questions: [
-		{
-			prompt: "In presenting the news dealing with political and social issues, do you think that news organizations deal fairly with all sides, or do they tend to favor one side?",
-			options: media_fair_options,
-			horizontal: false,
-			required: true,
-			name: 'media_fair'
-		},
-	],
-	on_finish: function (data) {
-		data.event = 'media_fair';
-		data.block = 'media_questions';
-		data.choice = JSON.parse(data.responses)[data.event];
-		data.resp = media_fair_options.findIndex(i => i.includes(data.choice)) + 1;
-	},
-};
+/
 
 
 var instructions_media_trust = {
@@ -1282,14 +1242,14 @@ var redirect = {
 
 // push objects into timeline
 
-timeline.push(instructions_start)
-timeline.push(socialmedia_account)
-timeline.push(socialmedia_account_other)
-timeline.push(socialmedia_account_disqualify)
-timeline.push(socialmedia_content_share)
-timeline.push(socialmedia_content_share_other)
+// timeline.push(instructions_start)
+// timeline.push(socialmedia_account)
+// timeline.push(socialmedia_account_other)
+// timeline.push(socialmedia_account_disqualify)
+// timeline.push(socialmedia_content_share)
+// timeline.push(socialmedia_content_share_other)
 
-timeline.push(screen2)
+// timeline.push(screen2)
 
 timeline.push(instructions_pre)
 timeline.push(trial_pre_procedure_practice)
@@ -1305,8 +1265,6 @@ timeline.push(crt_check)
 timeline.push(screen1)
 
 timeline.push(media_share_accuracy)
-// timeline.push(media_criticism)
-// timeline.push(media_fair)
 timeline.push(instructions_media_trust)
 timeline.push(media_trust)
 
