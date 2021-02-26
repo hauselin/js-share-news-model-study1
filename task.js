@@ -2,7 +2,6 @@ var taskinfo = {
 	type: 'study', // 'task', 'survey', or 'study'
 	uniquestudyid: 'js-share-news-model-study1', // unique task id: must be IDENTICAL to directory name
 	desc: 'accuracy-funny-nudge-between-within-design', // brief description of task
-	condition: '', // experiment/task condition
 	redirect_url: "https://www.cognition.run/" // set to false if no redirection required
 };
 
@@ -99,18 +98,22 @@ if (debug) {
 	var treat_instructions = treat_instructions[debug_treat_condition]
 	var treat_prompt = treat_prompt[debug_treat_condition]
 	var condition = debug_treat_condition;
+	var CONDITION = -1;
 } else {
-	if (date.getTime() % 2) {
+	if (CONDITION == 1) {
+		var condition = 'accuracy';
+	} else if (CONDITION == 2) {
 		var condition = 'funny';
 	} else {
-		var condition = 'accuracy';
+		console.log('Randomly determining condition.')
+		var condition = random_choice(['funny', 'accuracy']);
 	}
-	// var condition = random_choice(['funny', 'accuracy']);
 	var treat_instructions = treat_instructions[condition];
 	var treat_prompt = treat_prompt[condition]
 }
 taskinfo.condition = condition;
-console.log("CONDITION: " + condition);
+console.log("CONDITION: " + CONDITION);
+console.log("condition: " + condition);
 
 
 
@@ -121,6 +124,7 @@ jsPsych.data.addProperties({
 	uniquestudyid: taskinfo.uniquestudyid,
 	desc: taskinfo.desc,
 	condition: taskinfo.condition,
+	condition_jspsych: CONDITION
 
 });
 
@@ -163,7 +167,8 @@ var timeline = [];  // create experiment timeline
 
 var instructions_start = {
 	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
-	pages: ["To have the best experience, we highly recommend using <strong>Google Chrome</strong> or <strong>FireFox</strong> to complete this survey.", "First, we have a few questions about social media use."],
+	pages: ["To have the best experience, we highly recommend using <strong>Google Chrome</strong> or <strong>FireFox</strong> to complete this survey.<br><br>You should also try to <strong>complete this survey in one sitting</strong>. If you leave this survey or closing the browser tab/window, you will have to start from the beginning again when you return to it.",
+		"First, we have a few questions about social media use."],
 }
 
 var socialmedia_content_share = {
@@ -1193,16 +1198,18 @@ var google_resp = {
 // debrief
 var instructions_debrief = {
 	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
-	pages: ["You're reaching the end of the survey.<br>Earlier on, we showed you a variety of headlines.<br>Half of them were false and half of them were true.<br>You will see all the <strong>TRUE</strong> headlines again; any headlines not shown were FALSE.<br><br>You must review all the <strong>TRUE</strong> headlines to submit this survey.<br>You can use your mouse or the left/right arrow keys to review."]
+	pages: ["You're reaching the end of the survey.<br>Earlier on, we showed you a variety of headlines.<br>Half of them were false and half of them were true.<br>You will see all the <strong>TRUE</strong> headlines again; any headlines not shown were FALSE.<br><br>You must review all the <strong>TRUE</strong> headlines to submit this survey."]
 }
 
+var debrief_pages = stimuli_real.map(i => '<img src="' + i.img_path + '">');
 var debrief_headlines = {
 	type: 'instructions',
 	button_label_next: '', button_label_previous: "",
+	allow_keys: false,
 	show_clickable_nav: true,
 	show_page_number: true, 
 	page_label: "True Headline",
-	pages: stimuli_real.map(i => '<img src="' + i.img_path + '">')
+	pages: debrief_pages
 }
 
 
@@ -1223,10 +1230,10 @@ var comments_procedure = {
 		}
 	}],
 	timeline_variables: [
-		{
-			"desc": "Please enter the ZIP code for your primary residence.<br><strong>Reminder: This survey is anonymous.</strong>",
-			"name": "zipcode"
-		},
+		// {
+		// 	"desc": "Please enter the ZIP code for your primary residence.<br><strong>Reminder: This survey is anonymous.</strong>",
+		// 	"name": "zipcode"
+		// },
 		{
 			"desc": "Do you have any comments about our survey?",
 			"name": "comments_survey"
@@ -1275,11 +1282,11 @@ var redirect = {
 // push objects into timeline
 
 timeline.push(instructions_start)
-timeline.push(socialmedia_content_share)
-timeline.push(socialmedia_content_share_other)
 timeline.push(socialmedia_account)
 timeline.push(socialmedia_account_other)
 timeline.push(socialmedia_account_disqualify)
+timeline.push(socialmedia_content_share)
+timeline.push(socialmedia_content_share_other)
 
 timeline.push(screen1)
 
@@ -1297,8 +1304,8 @@ timeline.push(crt_check)
 timeline.push(screen2)
 
 timeline.push(media_share_accuracy)
-timeline.push(media_criticism)
-timeline.push(media_fair)
+// timeline.push(media_criticism)
+// timeline.push(media_fair)
 timeline.push(instructions_media_trust)
 timeline.push(media_trust)
 
@@ -1329,8 +1336,8 @@ timeline.push(socialmedia_source_other)
 timeline.push(random_resp)
 timeline.push(google_resp)
 
-timeline.push(instructions_debrief)
-timeline.push(debrief_headlines)
+// timeline.push(instructions_debrief)
+// timeline.push(debrief_headlines)
 
 timeline.push(comments_procedure)
 
