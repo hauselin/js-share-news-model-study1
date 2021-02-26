@@ -1360,6 +1360,15 @@ if (localStorage.getItem(taskinfo.uniquestudyid + '_qualify_check') == 'no') {
 	stim_preload = [];
 } 
 
+// don't alllow safari
+if (navigator.userAgent.includes("Safari")) {
+	timeline = [{
+		type: 'instructions', allow_backward: false, button_label_next: '', show_clickable_nav: false, allow_keys: false,
+		pages: ["You might be using Safari web browser. Please switch to Google Chrome or Firefox for a better survey experience."],
+	}];
+	stim_preload = [];
+}
+
 
 // run task
 jsPsych.init({
