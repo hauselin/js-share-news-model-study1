@@ -167,7 +167,8 @@ var timeline = [];  // create experiment timeline
 
 var instructions_start = {
 	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
-	pages: ["To have the best experience, we highly recommend using <strong>Google Chrome</strong> or <strong>FireFox</strong> to complete this survey.<br><br>You should also try to <strong>complete this survey in one sitting</strong>. If you leave this survey or closing the browser tab/window, you will have to start from the beginning again when you return to it.",
+	pages: [
+		"To have the best experience, we highly recommend using <strong>Google Chrome</strong> or <strong>FireFox</strong> to complete this survey.<br><br>You should also try to <strong>complete this survey in one sitting</strong>. If you leave this survey or closing the browser tab/window, you will have to start from the beginning again when you return to it.<br><br>Finally, <strong>avoid clicking back or forward in your browser</strong> because that will also bring you to the beginning of the survey.",
 		"First, we have a few questions about social media use."],
 }
 
@@ -1288,7 +1289,7 @@ timeline.push(socialmedia_account_disqualify)
 timeline.push(socialmedia_content_share)
 timeline.push(socialmedia_content_share_other)
 
-timeline.push(screen1)
+timeline.push(screen2)
 
 timeline.push(instructions_pre)
 timeline.push(trial_pre_procedure_practice)
@@ -1301,7 +1302,7 @@ timeline.push(instructions_crt)
 timeline.push(crt_procedure)
 timeline.push(crt_check)
 
-timeline.push(screen2)
+timeline.push(screen1)
 
 timeline.push(media_share_accuracy)
 // timeline.push(media_criticism)
