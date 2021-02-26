@@ -51,8 +51,11 @@ stimuli_pre = jsPsych.randomization.repeat(stimuli_pre, 1);  // shuffle
 var stimuli_post = stimuli_fake.slice(stimuli_fake.length / 2, stimuli_fake.length).concat(stimuli_real.slice(stimuli_real.length / 2, stimuli_real.length))
 stimuli_post.map(i => i.category = "block2-post")
 stimuli_post = jsPsych.randomization.repeat(stimuli_post, 1);  // shuffle
+
 // treatment stim
-var stimuli_treat = [stimuli[stimuli.length - 1]];
+// var stimuli_treat = [stimuli[stimuli.length - 1]];
+
+
 // practice stim
 var stimuli_practice = stimuli.slice(stimuli.length - n_stim['n_practice'], stimuli.length);
 
@@ -1288,7 +1291,7 @@ var redirect = {
 // timeline.push(trial_pre_procedure_practice)
 // timeline.push(trial_share_pre_procedure)
 // timeline.push(trial_treatment_instructions)
-// timeline.push(trial_treatment_procedure)
+timeline.push(trial_treatment_procedure)
 // timeline.push(trial_share_post_procedure)
 
 // timeline.push(instructions_crt)
@@ -1321,7 +1324,7 @@ var redirect = {
 // timeline.push(demo_politicalpref)
 // timeline.push(demo_socialissues)
 // timeline.push(demo_economicissues)
-timeline.push(demo_potus2020)
+// timeline.push(demo_potus2020)
 
 // timeline.push(socialmedia_source)
 // timeline.push(socialmedia_source_other)

@@ -1,3 +1,29 @@
+var stimuli_treat = [
+    {
+        "imag": "f3 edward snowden osama bin laden is still alive living in the bahamas.png",
+        "veracity": "fake",
+        "img_path": "stimuli/f3 edward snowden osama bin laden is still alive living in the bahamas.png",
+        "img_set": "",
+        "img_idx": 200,
+        "img_category": "treat"
+    },
+    {
+        "imag": "r6 Scientists discover most massive neutral star ever.png",
+        "veracity": "real",
+        "img_path": "stimuli/r6 Scientists discover most massive neutral star ever.png",
+        "img_set": "",
+        "img_idx": 201,
+        "img_category": "treat"
+    },
+]
+
+
+
+
+
+
+
+
 var stimuli = [
     {
         "headline_n": 1,
