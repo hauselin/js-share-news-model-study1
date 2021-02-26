@@ -282,9 +282,11 @@ var socialmedia_account_disqualify = {
 	conditional_function: function () {
 		if (accounts.includes("I don't use social media")) {
 			console.log('Not a social media user! Disqualified.');
+			localStorage.setItem('qualify_check', 'no');
 			return true;
 		} else {
 			console.log('Social media user. Continue.');
+			localStorage.setItem('qualify_check', 'yes');
 			return false;
 		}
 	}	
@@ -1281,7 +1283,6 @@ var redirect = {
 
 
 // push objects into timeline
-
 timeline.push(instructions_start)
 timeline.push(socialmedia_account)
 timeline.push(socialmedia_account_other)
@@ -1343,6 +1344,13 @@ timeline.push(redirect)
 
 
 
+// prevent people from completing again if they've previously failed the check
+if (localStorage.getItem('qualify_check') == 'no') {
+	timeline = [{
+		type: 'instructions', allow_backward: false, button_label_next: '', show_clickable_nav: false, allow_keys: false,
+		pages: ["Sorry. This survey is for people who use social media. This restriction is only for this survey, so please consider completing our future surveys.<br><br>Sorry again and all the best!"],
+	}];
+}
 
 
 
@@ -1361,6 +1369,7 @@ jsPsych.init({
 		jsPsych.data.get().addToAll({ // add parameters to all trials
 			total_time: jsPsych.totalTime() / 60000,
         });
+		localStorage.removeItem('qualify_check');
 		if (debug) {
 			jsPsych.data.displayData();
 		} 
