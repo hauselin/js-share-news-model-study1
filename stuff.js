@@ -67,3 +67,67 @@ var media_fair = {
         data.resp = media_fair_options.findIndex(i => i.includes(data.choice)) + 1;
     },
 };
+
+
+
+
+
+// debrief review headlines
+var instructions_debrief = {
+    type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
+    pages: ["You're reaching the end of the survey.<br>Earlier on, we showed you a variety of headlines.<br>Half of them were false and half of them were true.<br>You will see all the <strong>TRUE</strong> headlines again; any headlines not shown were FALSE.<br><br>You must review all the <strong>TRUE</strong> headlines to submit this survey."]
+}
+
+var debrief_pages = stimuli_real.map(i => '<img src="' + i.img_path + '">');
+var debrief_headlines = {
+    type: 'instructions',
+    button_label_next: '', button_label_previous: "",
+    allow_keys: false,
+    show_clickable_nav: true,
+    show_page_number: true,
+    page_label: "True Headline",
+    pages: debrief_pages
+}
+
+
+
+
+
+var demo_politicalpref_options = ['Strongly Democratic', 'Democratic', 'Lean Democratic', 'Lean Republican', 'Republican', 'Strongly Republican'];
+var demo_politicalpref = {
+	type: 'html-button-response',
+	stimulus: 'Which of the following best describes your political preference?<br><br>',
+	choices: demo_politicalpref_options,
+	on_finish: function (data) {
+		data.event = 'politicalpref';
+		data.block = 'demographics';
+		data.resp = demo_politicalpref_options[data.button_pressed];
+	}
+}
+
+
+
+var demo_economicissues_options = ['Strongly Liberal', 'Somewhat Liberal', 'Moderate', 'Somewhat Conservative', 'Strongly Conservative'];
+var demo_economicissues = {
+    type: 'html-button-response',
+    stimulus: 'On economic issues I am...<br><br>',
+    choices: demo_economicissues_options,
+    on_finish: function (data) {
+        data.event = 'economicissues';
+        data.block = 'demographics';
+        data.resp = demo_economicissues_options[data.button_pressed];
+    }
+}
+
+
+var demo_socialissues_options = ['Strongly Liberal', 'Somewhat Liberal', 'Moderate', 'Somewhat Conservative', 'Strongly Conservative'];
+var demo_socialissues = {
+    type: 'html-button-response',
+    stimulus: 'On social issues I am...<br><br>',
+    choices: demo_socialissues_options,
+    on_finish: function (data) {
+        data.event = 'socialissues';
+        data.block = 'demographics';
+        data.resp = demo_socialissues_options[data.button_pressed];
+    }
+}

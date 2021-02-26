@@ -6,7 +6,7 @@ var taskinfo = {
 };
 
 // debug parameters
-const debug = false;
+const debug = true;
 const debug_n = 3; // no. of trials to present during debug
 const debug_treat_condition = 'funny'  // funny or accuracy
 
@@ -258,7 +258,7 @@ var socialmedia_account_other = {
 
 var socialmedia_account_disqualify = {
 	timeline: [{
-		type: 'instructions', allow_backward: false, button_label_next: '', show_clickable_nav: false,
+		type: 'instructions', allow_backward: false, button_label_next: '', show_clickable_nav: false, allow_keys: false,
 		pages: ["Sorry. This survey is for people who use social media. This restriction is only for this survey, so please consider completing our future surveys.<br><br>Sorry again and all the best!"],
 	}],
 	conditional_function: function () {
@@ -436,7 +436,8 @@ var trial_treatment_instructions = {
 	pages: treat_instructions,
 	allow_backward: false,
 	button_label_next: 'Continue',
-	show_clickable_nav: true
+	show_clickable_nav: true,
+	allow_keys: false
 }
 
 var trial_treatment = {
@@ -559,7 +560,7 @@ var trial_share_post_procedure = {
 
 // crt
 var instructions_crt = {
-	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
+	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true, allow_keys: false,
 	pages: ["In the following section you will be asked several questions.<br><br>Please do your best to answer as accurately as possible."],
 }
 
@@ -673,11 +674,11 @@ var media_share_accuracy = {
 };
 
 
-/
+
 
 
 var instructions_media_trust = {
-	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
+	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true, allow_keys: false,
 	pages: ["Next, you'll indicate to what extent you trust the information that comes from different sources."]
 }
 
@@ -722,7 +723,7 @@ var media_trust = {
 
 // screen 
 var instructions_screen = {
-    type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
+    type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true, allow_keys: false,
     pages: ["Next, you will see a series of statements.<br><br>Please tell us whether you agree or disagree with each statement."]
 }
 
@@ -770,7 +771,7 @@ var screen3 = {
 
 // support_economic_inequality
 var instructions_support_economic_inequality = {
-    type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
+    type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true, allow_keys: false,
     pages: ["Next, you will see different statements.<br><br>Please indicate your level of agreement with each statement."],
 }
 
@@ -810,7 +811,7 @@ var support_economic_inequality_procedure = {
 
 // subjective_inequality
 var instructions_subjective_inequality = {
-    type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
+    type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true, allow_keys: false, 
     pages: ["We want to know how you feel about the next set of statements. There are no right or wrong answers.<br><br>When responding to the statements, please consider how well you think they describe <strong>THE PLACE YOU CURRENTLY LIVE IN.</strong><br><br>"],
 }
 
@@ -886,7 +887,7 @@ var demo_education = {
 var demo_houseincome_options = ['Less than $10,000', '$10,000 to $19,999', '$20,000 to $29,999', '$30,000 to $39,999', '$40,000 to $49,999', '$50,000 to $59,999', '$60,000 to $69,999', '$70,000 to $79,999', '$80,000 to $89,999', '$90,000 to $99,999', '$100,000 to $149,999', '$150,000 or more'];
 var demo_houseincome = {
     type: 'html-button-response',
-    stimulus: 'Information about income is very important to understand.  Would you please give your best guess?<br><br>Please indicate the answer that includes your entire household income in(previous year) before taxes.',
+    stimulus: 'Information about income is very important to understand.  Would you please give your best guess?<br><br>Please indicate the answer that includes your entire household income in (previous year) before taxes.',
     choices: demo_houseincome_options,
     on_finish: function (data) {
         data.event = 'houseincome';
@@ -969,43 +970,69 @@ var demo_politicalpos = {
 	}
 }
 
+
 var demo_politicalpref_options = ['Strongly Democratic', 'Democratic', 'Lean Democratic', 'Lean Republican', 'Republican', 'Strongly Republican'];
 var demo_politicalpref = {
-	type: 'html-button-response',
-	stimulus: 'Which of the following best describes your political preference?<br><br>',
+	type: 'survey-multi-choice',
+	questions: [
+		{
+			prompt: 'Which of the following best describes your political preference?',
+			options: demo_politicalpref_options,
+			horizontal: false,
+			required: true,
+			name: 'politicalpref'
+		}],
 	choices: demo_politicalpref_options,
 	on_finish: function (data) {
 		data.event = 'politicalpref';
 		data.block = 'demographics';
-		data.resp = demo_politicalpref_options[data.button_pressed];
+		data.resp = JSON.parse(data.responses)[data.event];
 	}
 }
+
 
 
 var demo_socialissues_options = ['Strongly Liberal', 'Somewhat Liberal', 'Moderate', 'Somewhat Conservative', 'Strongly Conservative'];
 var demo_socialissues = {
-	type: 'html-button-response',
-	stimulus: 'On social issues I am...<br><br>',
+	type: 'survey-multi-choice',
+	questions: [
+		{
+			prompt: 'On social issues I am...',
+			options: demo_socialissues_options,
+			horizontal: false,
+			required: true,
+			name: 'socialissues'
+		}],
 	choices: demo_socialissues_options,
 	on_finish: function (data) {
 		data.event = 'socialissues';
 		data.block = 'demographics';
-		data.resp = demo_socialissues_options[data.button_pressed];
+		data.resp = JSON.parse(data.responses)[data.event];
 	}
 }
+
+
 
 
 var demo_economicissues_options = ['Strongly Liberal', 'Somewhat Liberal', 'Moderate', 'Somewhat Conservative', 'Strongly Conservative'];
 var demo_economicissues = {
-	type: 'html-button-response',
-	stimulus: 'On economic issues I am...<br><br>',
+	type: 'survey-multi-choice',
+	questions: [
+		{
+			prompt: 'On economic issues I am...',
+			options: demo_economicissues_options,
+			horizontal: false,
+			required: true,
+			name: 'economicissues'
+		}],
 	choices: demo_economicissues_options,
 	on_finish: function (data) {
 		data.event = 'economicissues';
 		data.block = 'demographics';
-		data.resp = demo_economicissues_options[data.button_pressed];
+		data.resp = JSON.parse(data.responses)[data.event];
 	}
 }
+
 
 
 var demo_potus2020_options = ['Joseph Biden', 'Donald Trump', 'Other candidate', 'Did not vote for reasons outside of my control', 'Did not vote but could have', 'Did not vote out of protest'];
@@ -1107,7 +1134,7 @@ var random_resp = {
 	type: 'survey-multi-choice',
 	questions: [
 		{
-			prompt: "Did you respond <strong>randomly</strong> at any point during the study?<br><br><strong>Note: Please be honest! You will get your HIT regardless of your response.</strong>",
+			prompt: "Did you respond <strong>randomly</strong> at any point during the study?<br><br><strong>Note: Please be honest! You will get your payment regardless of your response.</strong>",
 			options: random_resp_options,
 			horizontal: false,
 			required: true,
@@ -1128,7 +1155,7 @@ var google_resp = {
 	type: 'survey-multi-choice',
 	questions: [
 		{
-			prompt: "Did you search the internet (via Google or otherwise) for any of the news headlines?<br><br><strong>Note: Please be honest! You will get your HIT regardless of your response.</strong>",
+			prompt: "Did you search the internet (via Google or otherwise) for any of the news headlines?<br><br><strong>Note: Please be honest! You will get your payment regardless of your response.</strong>",
 			options: google_resp_options,
 			horizontal: false,
 			required: true,
@@ -1155,23 +1182,6 @@ var google_resp = {
 
 
 
-
-// debrief
-var instructions_debrief = {
-	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true,
-	pages: ["You're reaching the end of the survey.<br>Earlier on, we showed you a variety of headlines.<br>Half of them were false and half of them were true.<br>You will see all the <strong>TRUE</strong> headlines again; any headlines not shown were FALSE.<br><br>You must review all the <strong>TRUE</strong> headlines to submit this survey."]
-}
-
-var debrief_pages = stimuli_real.map(i => '<img src="' + i.img_path + '">');
-var debrief_headlines = {
-	type: 'instructions',
-	button_label_next: '', button_label_previous: "",
-	allow_keys: false,
-	show_clickable_nav: true,
-	show_page_number: true, 
-	page_label: "True Headline",
-	pages: debrief_pages
-}
 
 
 
@@ -1251,33 +1261,33 @@ var redirect = {
 
 // timeline.push(screen2)
 
-timeline.push(instructions_pre)
-timeline.push(trial_pre_procedure_practice)
-timeline.push(trial_share_pre_procedure)
-timeline.push(trial_treatment_instructions)
-timeline.push(trial_treatment_procedure)
-timeline.push(trial_share_post_procedure)
+// timeline.push(instructions_pre)
+// timeline.push(trial_pre_procedure_practice)
+// timeline.push(trial_share_pre_procedure)
+// timeline.push(trial_treatment_instructions)
+// timeline.push(trial_treatment_procedure)
+// timeline.push(trial_share_post_procedure)
 
-timeline.push(instructions_crt)
-timeline.push(crt_procedure)
-timeline.push(crt_check)
+// timeline.push(instructions_crt)
+// timeline.push(crt_procedure)
+// timeline.push(crt_check)
 
-timeline.push(screen1)
+// timeline.push(screen1)
 
-timeline.push(media_share_accuracy)
-timeline.push(instructions_media_trust)
-timeline.push(media_trust)
+// timeline.push(media_share_accuracy)
+// timeline.push(instructions_media_trust)
+// timeline.push(media_trust)
 
-timeline.push(instructions_screen)
-timeline.push(screen3)
+// timeline.push(instructions_screen)
+// timeline.push(screen3)
 
-timeline.push(instructions_support_economic_inequality)
-timeline.push(support_economic_inequality_procedure)
+// timeline.push(instructions_support_economic_inequality)
+// timeline.push(support_economic_inequality_procedure)
 
-timeline.push(instructions_subjective_inequality)
-timeline.push(subjective_inequality_procedure)
+// timeline.push(instructions_subjective_inequality)
+// timeline.push(subjective_inequality_procedure)
 
-timeline.push(demo_age)
+// timeline.push(demo_age)
 timeline.push(demo_gender)
 timeline.push(demo_education)
 timeline.push(demo_houseincome)
@@ -1290,17 +1300,14 @@ timeline.push(demo_socialissues)
 timeline.push(demo_economicissues)
 timeline.push(demo_potus2020)
 
-timeline.push(socialmedia_source)
-timeline.push(socialmedia_source_other)
-timeline.push(random_resp)
-timeline.push(google_resp)
+// timeline.push(socialmedia_source)
+// timeline.push(socialmedia_source_other)
+// timeline.push(random_resp)
+// timeline.push(google_resp)
 
-// timeline.push(instructions_debrief)
-// timeline.push(debrief_headlines)
+// timeline.push(comments_procedure)
 
-timeline.push(comments_procedure)
-
-timeline.push(redirect)
+// timeline.push(redirect)
 
 
 
@@ -1319,7 +1326,7 @@ timeline.push(redirect)
 jsPsych.init({
 	timeline: timeline,
 	preload_images: stimuli.map(i => i.img_path),
-	experiment_width: stim_width + 200,
+	experiment_width: stim_width + 160,
 	on_finish: function () {
 		jsPsych.data.get().addToAll({ // add parameters to all trials
 			total_time: jsPsych.totalTime() / 60000,
