@@ -131,3 +131,55 @@ var demo_socialissues = {
         data.resp = demo_socialissues_options[data.button_pressed];
     }
 }
+
+
+
+
+
+
+
+
+
+
+var demo_gender_options = ['Female', 'Male', 'Trans Female', 'Trans Male', 'Trans/Non-Binary', 'Not listed', 'Prefer not to answer'];
+var demo_gender = {
+    type: 'html-button-response',
+    stimulus: 'What is your gender?<br><br>',
+    choices: demo_gender_options,
+    on_finish: function (data) {
+        data.event = 'gender';
+        data.block = 'demographics';
+        data.resp = demo_gender_options[data.button_pressed];
+    }
+}
+
+
+
+var demo_houseincome_options = ['Less than $10,000', '$10,000 to $19,999', '$20,000 to $29,999', '$30,000 to $39,999', '$40,000 to $49,999', '$50,000 to $59,999', '$60,000 to $69,999', '$70,000 to $79,999', '$80,000 to $89,999', '$90,000 to $99,999', '$100,000 to $149,999', '$150,000 or more'];
+var demo_houseincome = {
+    type: 'html-button-response',
+    stimulus: 'Information about income is very important to understand.  Would you please give your best guess?<br><br>Please indicate the answer that includes your entire household income in (previous year) before taxes.',
+    choices: demo_houseincome_options,
+    on_finish: function (data) {
+        data.event = 'houseincome';
+        data.block = 'demographics';
+        data.resp = demo_houseincome_options[data.button_pressed];
+    }
+}
+
+
+
+
+
+
+var demo_potus2020_options = ['Joseph Biden', 'Donald Trump', 'Other candidate', 'Did not vote for reasons outside of my control', 'Did not vote but could have', 'Did not vote out of protest'];
+var demo_potus2020 = {
+    type: 'html-button-response',
+    stimulus: 'Who did you vote for in the 2020 Presidential Election?<br><br><strong>Reminder: This survey is anonymous.</strong><br><br>',
+    choices: demo_potus2020_options,
+    on_finish: function (data) {
+        data.event = 'potus2020';
+        data.block = 'demographics';
+        data.resp = demo_potus2020_options[data.button_pressed];
+    }
+}
