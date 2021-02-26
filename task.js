@@ -98,18 +98,31 @@ console.log("subject ID: " + subject_id);
 
 // assign condition
 if (debug) {
+	console.log("DEBUG MODE!")
 	var treat_instructions = treat_instructions[debug_treat_condition]
 	var treat_prompt = treat_prompt[debug_treat_condition]
 	var condition = debug_treat_condition;
 	var CONDITION = -1;
-} else {
+	console.log('Randomly determining treatment headline.')
+	var stimuli_treat = [random_choice(stimuli_treat)];
+} else {  // counterbalance experimental conditions
 	if (CONDITION == 1) {
 		var condition = 'accuracy';
+		var stimuli_treat = [stimuli_treat[0]];
 	} else if (CONDITION == 2) {
+		var condition = 'accuracy';
+		var stimuli_treat = [stimuli_treat[1]];
+	} else if (CONDITION == 3) {
 		var condition = 'funny';
+		var stimuli_treat = [stimuli_treat[0]];
+	} else if (CONDITION == 4) {
+		var condition = 'funny';
+		var stimuli_treat = [stimuli_treat[1]];
 	} else {
 		console.log('Randomly determining condition.')
 		var condition = random_choice(['funny', 'accuracy']);
+		console.log('Randomly determining treatment headline.')
+		var stimuli_treat = [random_choice(stimuli_treat)];
 	}
 	var treat_instructions = treat_instructions[condition];
 	var treat_prompt = treat_prompt[condition]
@@ -450,17 +463,6 @@ var trial_treatment = {
 		img_category: jsPsych.timelineVariable("img_category"),
 		img_idx: jsPsych.timelineVariable("img_idx"),
 		veracity: jsPsych.timelineVariable("veracity"),
-		benefits_r: jsPsych.timelineVariable("benefits_r"),
-		favors_r: jsPsych.timelineVariable("favors_r"),
-		funny: jsPsych.timelineVariable("funny"),
-		surprising: jsPsych.timelineVariable("surprising"),
-		headline_n: jsPsych.timelineVariable("headline_n"),
-		important: jsPsych.timelineVariable("important"),
-		likely_true: jsPsych.timelineVariable("likely_true"),
-		likely_share: jsPsych.timelineVariable("likely_share"),
-		reputation_engage: jsPsych.timelineVariable("reputation_engage"),
-		reputation_overall: jsPsych.timelineVariable("reputation_overall"),
-		reputation_partyloyalty: jsPsych.timelineVariable("reputation_partyloyalty"),
 	},
 	trial_duration: rt_deadline,
 	choices: responses_accuracy_options,
