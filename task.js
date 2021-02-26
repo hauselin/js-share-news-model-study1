@@ -6,7 +6,7 @@ var taskinfo = {
 };
 
 // debug parameters
-const debug = true;
+const debug = false;
 const debug_n = 3; // no. of trials to present during debug
 const debug_treat_condition = 'funny'  // funny or accuracy
 
@@ -95,6 +95,7 @@ var treat_prompt = {
 var date = new Date()
 var subject_id = jsPsych.randomization.randomID(5) + "_" + date.getTime()
 console.log("subject ID: " + subject_id);
+// var CONDITION = 4;
 
 // assign condition
 if (debug) {
@@ -119,6 +120,7 @@ if (debug) {
 		var condition = 'funny';
 		var stimuli_treat = [stimuli_treat[1]];
 	} else {
+		var CONDITION = -1;
 		console.log('Randomly determining condition.')
 		var condition = random_choice(['funny', 'accuracy']);
 		console.log('Randomly determining treatment headline.')
@@ -1280,62 +1282,62 @@ var redirect = {
 
 // push objects into timeline
 
-// timeline.push(instructions_start)
-// timeline.push(socialmedia_account)
-// timeline.push(socialmedia_account_other)
-// timeline.push(socialmedia_account_disqualify)
-// timeline.push(socialmedia_content_share)
-// timeline.push(socialmedia_content_share_other)
+timeline.push(instructions_start)
+timeline.push(socialmedia_account)
+timeline.push(socialmedia_account_other)
+timeline.push(socialmedia_account_disqualify)
+timeline.push(socialmedia_content_share)
+timeline.push(socialmedia_content_share_other)
 
-// timeline.push(screen2)
+timeline.push(screen2)
 
-// timeline.push(instructions_pre)
-// timeline.push(trial_pre_procedure_practice)
-// timeline.push(trial_share_pre_procedure)
-// timeline.push(trial_treatment_instructions)
+timeline.push(instructions_pre)
+timeline.push(trial_pre_procedure_practice)
+timeline.push(trial_share_pre_procedure)
+timeline.push(trial_treatment_instructions)
 timeline.push(trial_treatment_procedure)
-// timeline.push(trial_share_post_procedure)
+timeline.push(trial_share_post_procedure)
 
-// timeline.push(instructions_crt)
-// timeline.push(crt_procedure)
-// timeline.push(crt_check)
+timeline.push(instructions_crt)
+timeline.push(crt_procedure)
+timeline.push(crt_check)
 
-// timeline.push(screen1)
+timeline.push(screen1)
 
-// timeline.push(media_share_accuracy)
-// timeline.push(instructions_media_trust)
-// timeline.push(media_trust)
+timeline.push(media_share_accuracy)
+timeline.push(instructions_media_trust)
+timeline.push(media_trust)
 
-// timeline.push(instructions_screen)
-// timeline.push(screen3)
+timeline.push(instructions_screen)
+timeline.push(screen3)
 
-// timeline.push(instructions_support_economic_inequality)
-// timeline.push(support_economic_inequality_procedure)
+timeline.push(instructions_support_economic_inequality)
+timeline.push(support_economic_inequality_procedure)
 
-// timeline.push(instructions_subjective_inequality)
-// timeline.push(subjective_inequality_procedure)
+timeline.push(instructions_subjective_inequality)
+timeline.push(subjective_inequality_procedure)
 
-// timeline.push(demo_age)
-// timeline.push(demo_gender)
-// timeline.push(demo_education)
-// timeline.push(demo_houseincome)
-// timeline.push(demo_ethnicity)
-// timeline.push(demo_ethnicity_other)
-// timeline.push(demo_english)
-// timeline.push(demo_politicalpos)
-// timeline.push(demo_politicalpref)
-// timeline.push(demo_socialissues)
-// timeline.push(demo_economicissues)
-// timeline.push(demo_potus2020)
+timeline.push(demo_age)
+timeline.push(demo_gender)
+timeline.push(demo_education)
+timeline.push(demo_houseincome)
+timeline.push(demo_ethnicity)
+timeline.push(demo_ethnicity_other)
+timeline.push(demo_english)
+timeline.push(demo_politicalpos)
+timeline.push(demo_politicalpref)
+timeline.push(demo_socialissues)
+timeline.push(demo_economicissues)
+timeline.push(demo_potus2020)
 
-// timeline.push(socialmedia_source)
-// timeline.push(socialmedia_source_other)
-// timeline.push(random_resp)
-// timeline.push(google_resp)
+timeline.push(socialmedia_source)
+timeline.push(socialmedia_source_other)
+timeline.push(random_resp)
+timeline.push(google_resp)
 
-// timeline.push(comments_procedure)
+timeline.push(comments_procedure)
 
-// timeline.push(redirect)
+timeline.push(redirect)
 
 
 
