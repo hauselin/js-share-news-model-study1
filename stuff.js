@@ -187,3 +187,11 @@ var demo_potus2020 = {
 
 
 
+
+var redirect = {
+    type: 'html-keyboard-response',
+    stimulus: '<p>You have completed the survey.</p><p><a href="' + taskinfo.redirect_url + '">Please click here to submit your responses.</a></p>',
+    choices: jsPsych.NO_KEYS  // prevents accidentally skipping this trial
+}
+
+

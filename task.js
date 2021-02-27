@@ -2,7 +2,7 @@ var taskinfo = {
 	type: 'study', // 'task', 'survey', or 'study'
 	uniquestudyid: 'js-share-news-model-study1-pilot', // unique task id: must be IDENTICAL to directory name
 	desc: 'accuracy-funny-nudge-between-within-design', // brief description of task
-	redirect_url: "https://app.prolific.co/submissions/complete?cc=2B63A5F9"
+	redirect_url: "https://www.google.com"
 };
 
 // debug parameters
@@ -1263,10 +1263,11 @@ var comments_procedure = {
 
 
 
-var redirect = {
-	type: 'html-keyboard-response',
-	stimulus: '<p>You have completed the survey.</p><p><a href="' + taskinfo.redirect_url + '">Please click here to submit your responses.</a></p>',
-	choices: jsPsych.NO_KEYS  // prevents accidentally skipping this trial
+
+
+var instructions_redirect = {
+	type: 'instructions', allow_backward: false, button_label_next: 'Submit', show_clickable_nav: true, allow_keys: false,
+	pages: ["You've completed the survey. Click the button below to submit your responses. You'll be redirected to the survey platform."],
 }
 
 
@@ -1286,10 +1287,8 @@ var redirect = {
 
 
 
-
-
-
 // push objects into timeline
+
 timeline.push(instructions_start)
 timeline.push(socialmedia_account)
 timeline.push(socialmedia_account_other)
@@ -1345,7 +1344,7 @@ timeline.push(google_resp)
 
 timeline.push(comments_procedure)
 
-timeline.push(redirect)
+timeline.push(instructions_redirect)
 
 
 
@@ -1383,6 +1382,8 @@ jsPsych.init({
 		});
 		if (debug) {
 			jsPsych.data.displayData();
+		} else {  // redirect
+			window.location.href = taskinfo.redirect_url;
 		}
 	}
 })
