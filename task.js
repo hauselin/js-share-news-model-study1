@@ -148,7 +148,8 @@ jsPsych.data.addProperties({
 	uniquestudyid: taskinfo.uniquestudyid,
 	desc: taskinfo.desc,
 	condition: taskinfo.condition,
-	condition_jspsych: CONDITION
+	condition_jspsych: CONDITION,
+	complete: 0,  // task not completed yet
 
 });
 
@@ -1379,6 +1380,7 @@ jsPsych.init({
 	on_finish: function () {
 		jsPsych.data.get().addToAll({ // add parameters to all trials
 			total_time: jsPsych.totalTime() / 60000,
+			complete: 1  // indicate whether completed task
 		});
 		if (debug) {
 			jsPsych.data.displayData();
