@@ -6,7 +6,7 @@ var taskinfo = {
 };
 
 // debug parameters
-const debug = false;
+const debug = true;
 const debug_n = 3; // no. of trials to present during debug
 const debug_treat_condition = 'funny'  // funny or accuracy
 
@@ -222,7 +222,7 @@ var socialmedia_content_share_other = {
 		on_finish: function (data) {
 			data.event = 'prescreen';
 			data.block = 'social_media_content_share_other';
-			data.resp = JSON.parse(data.responses)[data.block];
+			data.choice = JSON.parse(data.responses)[data.block];
 		}
 	}],
 	conditional_function: function () {
@@ -264,7 +264,7 @@ var socialmedia_account_other = {
 		on_finish: function (data) {
 			data.event = 'prescreen';
 			data.block = 'social_media_account_other';
-			data.resp = JSON.parse(data.responses)[data.block];
+			data.choice = JSON.parse(data.responses)[data.block];
 			accounts = accounts.concat(data.resp);
 		}
 	}],
@@ -1125,8 +1125,8 @@ var socialmedia_source_other = {
 		questions: [{ prompt: 'What other social media sources were you thinking about?', columns: 30, required: true, name: 'social_media_source_other' }],
 		on_finish: function (data) {
 			data.event = 'smsource_other';
-			data.block = 'social_media_source_other';
-			data.resp = JSON.parse(data.responses)[data.block];
+			data.block = 'smsource_other';
+			data.choice = JSON.parse(data.responses)[data.block];
 		}
 	}],
 	conditional_function: function () {
