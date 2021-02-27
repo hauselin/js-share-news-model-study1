@@ -1,8 +1,8 @@
 var taskinfo = {
 	type: 'study', // 'task', 'survey', or 'study'
-	uniquestudyid: 'js-share-news-model-study1', // unique task id: must be IDENTICAL to directory name
+	uniquestudyid: 'js-share-news-model-study1-pilot', // unique task id: must be IDENTICAL to directory name
 	desc: 'accuracy-funny-nudge-between-within-design', // brief description of task
-	redirect_url: "https://www.cognition.run/" 
+	redirect_url: "https://app.prolific.co/submissions/complete?cc=2B63A5F9"
 };
 
 // debug parameters
@@ -13,7 +13,7 @@ const debug_treat_condition = 'funny'  // funny or accuracy
 // DEFINE TASK PARAMETERS
 const rt_deadline = null;
 const stim_width = 500;
-var itis = iti_exponential(200, 700); 
+var itis = iti_exponential(200, 700);
 var n_stim = {
 	"pre_fake": 16,
 	'pre_real': 16,
@@ -278,7 +278,7 @@ var socialmedia_account_other = {
 			return false;
 		}
 	}
-} 
+}
 
 var socialmedia_account_disqualify = {
 	timeline: [{
@@ -295,7 +295,7 @@ var socialmedia_account_disqualify = {
 			localStorage.setItem(taskinfo.uniquestudyid + '_qualify_check', 'yes');
 			return false;
 		}
-	}	
+	}
 }
 
 
@@ -323,7 +323,7 @@ var screen1 = {
 			prompt:
 				// '<p style="text-align:left;">' +
 				'When a big news story breaks, people often go online to get up-to-the-minute details on what is going on. We want to know which websites people trust to get this information. We also want to know if people are paying attention to the question. Please ignore the question and select FoxNews.com and NBC.com as your two answers.<br><br>When there is a big news story, which is the one news website you would visit first? (Please choose only one):',
-				// '</p>',
+			// '</p>',
 			options: jsPsych.randomization.repeat(["New York Times website", "Yahoo! News", "Huffington Post", "NBC.com", "CNN.com", "USA Today Website", "FoxNews.com", "Google News"], 1).concat(['Other']),
 			horizontal: false,
 			required: true,
@@ -402,7 +402,7 @@ var trial_share_pre = {
 	},
 	trial_duration: rt_deadline,
 	choices: responses_share_options,
-	stimulus_width: stim_width, 
+	stimulus_width: stim_width,
 	on_finish: function (data) {
 		data.block = 'block1-share'
 		data.event = 'response';
@@ -418,7 +418,7 @@ var trial_share_pre = {
 		current_iti = random_choice(itis);
 		data.iti = current_iti;
 	},
-	post_trial_gap: function () {return current_iti},
+	post_trial_gap: function () { return current_iti },
 	render_on_canvas: false
 }
 
@@ -491,7 +491,7 @@ var trial_treatment = {
 		// current_trial += 1;
 		// data.trial = current_trial;
 		if (data.button_pressed) {
-			data.choice_text = responses_accuracy_options[1];   
+			data.choice_text = responses_accuracy_options[1];
 		} else {
 			data.choice_text = responses_accuracy_options[0];
 		}
@@ -582,7 +582,7 @@ var instructions_crt = {
 var crt_procedure = {
 	timeline: [{
 		type: 'survey-text',
-		questions: [{ prompt: jsPsych.timelineVariable('desc'), columns: 20, required: true, name: jsPsych.timelineVariable('q')}],
+		questions: [{ prompt: jsPsych.timelineVariable('desc'), columns: 20, required: true, name: jsPsych.timelineVariable('q') }],
 		on_finish: function (data) {
 			data.event = 'postscreen';
 			data.desc = jsPsych.timelineVariable('desc', true);
@@ -684,7 +684,7 @@ var media_share_accuracy = {
 		data.event = 'media_share_accuracy';
 		data.block = 'media_questions';
 		data.choice = JSON.parse(data.responses)[data.event];
-		data.resp = media_share_accuracy_options.findIndex(i => i.includes(data.choice)) + 1; 
+		data.resp = media_share_accuracy_options.findIndex(i => i.includes(data.choice)) + 1;
 	},
 };
 
@@ -738,8 +738,8 @@ var media_trust = {
 
 // screen 
 var instructions_screen = {
-    type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true, allow_keys: false,
-    pages: ["Next, you will see a series of statements.<br><br>Please tell us whether you agree or disagree with each statement."]
+	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true, allow_keys: false,
+	pages: ["Next, you will see a series of statements.<br><br>Please tell us whether you agree or disagree with each statement."]
 }
 
 var labels5 = { "agree strongly": 2, "agree": 1, "neither agree nor disagree": 0, "disagree": -1, "disagree strongly": -2 }
@@ -747,33 +747,33 @@ var screen_questions = ['Please click the "neither agree nor disagree" response.
 screen_questions = jsPsych.randomization.repeat(screen_questions, 1);  // shuffle
 screen_questions_idx = screen_questions.findIndex(i => i.includes('neither agree nor disagree'));
 var screen3 = {
-    type: 'survey-likert',
-    questions: function () {
-        var qs = [];
-        for (var i = 0; i < screen_questions.length; i++) {
-            qs_temp = {};
-            qs_temp['name'] = i;
-            qs_temp['prompt'] = screen_questions[i];
-            qs_temp['required'] = true;
-            qs_temp['labels'] = Object.keys(labels5);
-            qs.push(qs_temp);
-        }
-        return qs;
-    },
-    on_finish: function (data) {
-        data.block = 'screen3';
-        var responses = JSON.parse(data.responses)
-        data.resp = responses[screen_questions_idx];
-        data.resp = Object.values(labels5)[data.resp];
-        if (data.resp == 0 && include != 0) {
-            include = 1;
-            data.include = 1;
-        } else {
-            include = 0;
-            data.include = 0;
-        }
-        console.log("include: " + include);
-    }
+	type: 'survey-likert',
+	questions: function () {
+		var qs = [];
+		for (var i = 0; i < screen_questions.length; i++) {
+			qs_temp = {};
+			qs_temp['name'] = i;
+			qs_temp['prompt'] = screen_questions[i];
+			qs_temp['required'] = true;
+			qs_temp['labels'] = Object.keys(labels5);
+			qs.push(qs_temp);
+		}
+		return qs;
+	},
+	on_finish: function (data) {
+		data.block = 'screen3';
+		var responses = JSON.parse(data.responses)
+		data.resp = responses[screen_questions_idx];
+		data.resp = Object.values(labels5)[data.resp];
+		if (data.resp == 0 && include != 0) {
+			include = 1;
+			data.include = 1;
+		} else {
+			include = 0;
+			data.include = 0;
+		}
+		console.log("include: " + include);
+	}
 }
 
 
@@ -786,35 +786,35 @@ var screen3 = {
 
 // support_economic_inequality
 var instructions_support_economic_inequality = {
-    type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true, allow_keys: false,
-    pages: ["Next, you will see different statements.<br><br>Please indicate your level of agreement with each statement."],
+	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true, allow_keys: false,
+	pages: ["Next, you will see different statements.<br><br>Please indicate your level of agreement with each statement."],
 }
 
 var support_economic_inequality_labels = ['strongly disagree', 'strongly agree']
 var support_economic_inequality_procedure = {
-    timeline: [{
-        type: 'html-slider-response',
-        stimulus: jsPsych.timelineVariable('desc'),
-        data: {
-            q: jsPsych.timelineVariable('q'),
-            subscale: jsPsych.timelineVariable('subscale'),
-            reverse: jsPsych.timelineVariable('reverse')
-        },
-        labels: support_economic_inequality_labels,
-        slider_width: 500, min: 10, max: 70, slider_start: 40, step: 1,
-        require_movement: true,
-        on_finish: function (data) {
-            data.resp = Number(data.response) / 10;
-            data.resp_reverse = data.resp;
-            if (data.reverse) { // reverse code item if necessary
-                data.resp_reverse = 7 + 1 - data.resp;
-            }
-            console.log("q" + data.q + " (reverse: " + data.reverse + "): " + data.stimulus);
-            console.log("resp: " + data.resp + ", resp_reverse: " + data.resp_reverse);
-        }
-    }],
-    timeline_variables: items_support_economic_inequality,
-    randomize_order: false
+	timeline: [{
+		type: 'html-slider-response',
+		stimulus: jsPsych.timelineVariable('desc'),
+		data: {
+			q: jsPsych.timelineVariable('q'),
+			subscale: jsPsych.timelineVariable('subscale'),
+			reverse: jsPsych.timelineVariable('reverse')
+		},
+		labels: support_economic_inequality_labels,
+		slider_width: 500, min: 10, max: 70, slider_start: 40, step: 1,
+		require_movement: true,
+		on_finish: function (data) {
+			data.resp = Number(data.response) / 10;
+			data.resp_reverse = data.resp;
+			if (data.reverse) { // reverse code item if necessary
+				data.resp_reverse = 7 + 1 - data.resp;
+			}
+			console.log("q" + data.q + " (reverse: " + data.reverse + "): " + data.stimulus);
+			console.log("resp: " + data.resp + ", resp_reverse: " + data.resp_reverse);
+		}
+	}],
+	timeline_variables: items_support_economic_inequality,
+	randomize_order: false
 };
 
 
@@ -826,35 +826,35 @@ var support_economic_inequality_procedure = {
 
 // subjective_inequality
 var instructions_subjective_inequality = {
-    type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true, allow_keys: false, 
-    pages: ["We want to know how you feel about the next set of statements. There are no right or wrong answers.<br><br>When responding to the statements, please consider how well you think they describe <strong>THE PLACE YOU CURRENTLY LIVE IN.</strong><br><br>"],
+	type: 'instructions', allow_backward: false, button_label_next: 'Continue', show_clickable_nav: true, allow_keys: false,
+	pages: ["We want to know how you feel about the next set of statements. There are no right or wrong answers.<br><br>When responding to the statements, please consider how well you think they describe <strong>THE PLACE YOU CURRENTLY LIVE IN.</strong><br><br>"],
 }
 
 var subjective_inequality_labels = ['strongly disagree', 'strongly agree']
 var subjective_inequality_procedure = {
-    timeline: [{
-        type: 'html-slider-response',
-        stimulus: jsPsych.timelineVariable('desc'),
-        data: {
-            q: jsPsych.timelineVariable('q'),
-            subscale: jsPsych.timelineVariable('subscale'),
-            reverse: jsPsych.timelineVariable('reverse')
-        },
-        labels: subjective_inequality_labels,
-        slider_width: 500, min: 10, max: 70, slider_start: 40, step: 1,
-        require_movement: true,
-        on_finish: function (data) {
-            data.resp = Number(data.response) / 10;
-            data.resp_reverse = data.resp;
-            if (data.reverse) { // reverse code item if necessary
-                data.resp_reverse = 7 + 1 - data.resp;
-            }
-            console.log("q" + data.q + " (reverse: " + data.reverse + "): " + data.stimulus);
-            console.log("resp: " + data.resp + ", resp_reverse: " + data.resp_reverse);
-        }
-    }],
-    timeline_variables: items_subjective_inequality,
-    randomize_order: false
+	timeline: [{
+		type: 'html-slider-response',
+		stimulus: jsPsych.timelineVariable('desc'),
+		data: {
+			q: jsPsych.timelineVariable('q'),
+			subscale: jsPsych.timelineVariable('subscale'),
+			reverse: jsPsych.timelineVariable('reverse')
+		},
+		labels: subjective_inequality_labels,
+		slider_width: 500, min: 10, max: 70, slider_start: 40, step: 1,
+		require_movement: true,
+		on_finish: function (data) {
+			data.resp = Number(data.response) / 10;
+			data.resp_reverse = data.resp;
+			if (data.reverse) { // reverse code item if necessary
+				data.resp_reverse = 7 + 1 - data.resp;
+			}
+			console.log("q" + data.q + " (reverse: " + data.reverse + "): " + data.stimulus);
+			console.log("resp: " + data.resp + ", resp_reverse: " + data.resp_reverse);
+		}
+	}],
+	timeline_variables: items_subjective_inequality,
+	randomize_order: false
 };
 
 
@@ -897,14 +897,14 @@ var demo_gender = {
 }
 
 var demo_education = {
-    type: 'html-slider-response',
-    stimulus: 'How many years of formal education have you completed?<br><br>',
-    labels: ['0 years', '5 years', '10 years', '15 years', '20 years or more'],
-    require_movement: true,
-    min: 0, max: 20, slider_start: 10,
-    on_finish: function (data) {
-        data.resp = data.response;
-    }
+	type: 'html-slider-response',
+	stimulus: 'How many years of formal education have you completed?<br><br>',
+	labels: ['0 years', '5 years', '10 years', '15 years', '20 years or more'],
+	require_movement: true,
+	min: 0, max: 20, slider_start: 10,
+	on_finish: function (data) {
+		data.resp = data.response;
+	}
 };
 
 
@@ -959,7 +959,7 @@ var demo_ethnicity_other = {
 			data.event = 'ethnicity_other';
 			data.block = 'demographics_other';
 			data.resp = JSON.parse(data.responses)['demo_ethnicity_other'];
-	}
+		}
 	}],
 	conditional_function: function () {
 		var data = jsPsych.data.get().last(1).values()[0];
@@ -970,7 +970,7 @@ var demo_ethnicity_other = {
 			return false;
 		}
 	}
-} 
+}
 
 
 
@@ -1137,7 +1137,7 @@ var socialmedia_source_other = {
 			return false;
 		}
 	}
-} 
+}
 
 
 
@@ -1264,9 +1264,9 @@ var comments_procedure = {
 
 
 var redirect = {
-    type: 'html-keyboard-response',
-    stimulus: '<p>You have completed the survey.</p><p><a href="' + taskinfo.redirect_url + '">Please click here to submit your responses.</a></p>',
-    choices: jsPsych.NO_KEYS  // prevents accidentally skipping this trial
+	type: 'html-keyboard-response',
+	stimulus: '<p>You have completed the survey.</p><p><a href="' + taskinfo.redirect_url + '">Please click here to submit your responses.</a></p>',
+	choices: jsPsych.NO_KEYS  // prevents accidentally skipping this trial
 }
 
 
@@ -1358,16 +1358,18 @@ if (localStorage.getItem(taskinfo.uniquestudyid + '_qualify_check') == 'no') {
 		pages: ["Sorry. This survey is for people who use social media. This restriction is only for this survey, so please consider completing our future surveys.<br><br>Sorry again and all the best!"],
 	}];
 	stim_preload = [];
-} 
+}
 
 // don't alllow safari
-if (navigator.userAgent.includes("Safari")) {
+var is_Safari = navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome');
+if (is_Safari) {
 	timeline = [{
 		type: 'instructions', allow_backward: false, button_label_next: '', show_clickable_nav: false, allow_keys: false,
-		pages: ["You might be using Safari web browser. Please switch to Google Chrome or Firefox for a better survey experience."],
+		pages: ["You might be using an incompatible web browser.<br><br>Please switch to <strong>Google Chrome</strong> or <strong>Firefox</strong> for a better experience."],
 	}];
 	stim_preload = [];
 }
+
 
 
 // run task
@@ -1384,11 +1386,3 @@ jsPsych.init({
 		}
 	}
 })
-
-
-
-
-
-
-
-
