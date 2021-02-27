@@ -1,7 +1,7 @@
 var taskinfo = {
 	type: 'study', // 'task', 'survey', or 'study'
 	uniquestudyid: 'js-share-news-model-study1-pilot', // unique task id: must be IDENTICAL to directory name
-	desc: 'accuracy-funny-nudge-between-within-design', // brief description of task
+	description: 'accuracy-funny-nudge-between-within-design', // brief description of task
 	redirect_url: "https://www.google.com"
 };
 
@@ -146,7 +146,7 @@ jsPsych.data.addProperties({
 	subject: subject_id,
 	type: taskinfo.type,
 	uniquestudyid: taskinfo.uniquestudyid,
-	desc: taskinfo.desc,
+	description: taskinfo.description,
 	condition: taskinfo.condition,
 	condition_jspsych: CONDITION,
 	complete: 0,  // task not completed yet
