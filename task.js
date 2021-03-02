@@ -961,7 +961,7 @@ var demo_ethnicity_other = {
 		questions: [{ prompt: 'What other ethnicities do you identify with?', columns: 30, required: true, name: 'demo_ethnicity_other' }],
 		on_finish: function (data) {
 			data.event = 'ethnicity_other';
-			data.block = 'demographics_other';
+			data.block = 'demographics';
 			data.resp = JSON.parse(data.responses)['demo_ethnicity_other'];
 		}
 	}],
@@ -1128,7 +1128,7 @@ var socialmedia_source_other = {
 		questions: [{ prompt: 'What other social media sources were you thinking about?', columns: 30, required: true, name: 'social_media_source_other' }],
 		on_finish: function (data) {
 			data.event = 'smsource_other';
-			data.block = 'smsource_other';
+			data.block = 'smsource';
 			data.choice = JSON.parse(data.responses)[data.block];
 		}
 	}],
