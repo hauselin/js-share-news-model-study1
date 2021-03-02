@@ -606,6 +606,7 @@ var crt_check = {
 	choices: ['yes', 'maybe', 'no'],
 	on_finish: function (data) {
 		data.event = 'crt-check';
+		data.block = 'crt-check';
 		if (data.button_pressed == 0) {
 			data.resp = 1;
 		} else if (data.button_pressed == 1) {
@@ -905,6 +906,8 @@ var demo_education = {
 	min: 0, max: 20, slider_start: 10,
 	on_finish: function (data) {
 		data.resp = data.response;
+		data.event = 'education';
+		data.block = 'demographics';
 	}
 };
 
