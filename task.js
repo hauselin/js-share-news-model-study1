@@ -2,11 +2,11 @@ var taskinfo = {
 	type: 'study', // 'task', 'survey', or 'study'
 	uniquestudyid: 'js-share-news-model-study1-pilot', // unique task id: must be IDENTICAL to directory name
 	description: 'accuracy-funny-nudge-between-within-design', // brief description of task
-	redirect_url: "https://www.google.com"
+	redirect_url: "https://egky1wbmi6.cognition.run"
 };
 
 // debug parameters
-const debug = true;
+const debug = false;
 const debug_n = 3; // no. of trials to present during debug
 const debug_treat_condition = 'funny'  // funny or accuracy
 
@@ -1128,7 +1128,7 @@ var socialmedia_source_other = {
 		questions: [{ prompt: 'What other social media sources were you thinking about?', columns: 30, required: true, name: 'social_media_source_other' }],
 		on_finish: function (data) {
 			data.event = 'smsource_other';
-			data.block = 'smsource';
+			data.block = 'smsource_other';
 			data.choice = JSON.parse(data.responses)[data.block];
 		}
 	}],
