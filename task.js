@@ -281,6 +281,7 @@ var socialmedia_account_other = {
 	}
 }
 
+// disqualify people who don't use social media
 var socialmedia_account_disqualify = {
 	timeline: [{
 		type: 'instructions', allow_backward: false, button_label_next: '', show_clickable_nav: false, allow_keys: false,
@@ -1296,7 +1297,7 @@ var instructions_redirect = {
 timeline.push(instructions_start)
 timeline.push(socialmedia_account)
 timeline.push(socialmedia_account_other)
-timeline.push(socialmedia_account_disqualify)
+timeline.push(socialmedia_account_disqualify)  // disqualify people who don't use social media
 timeline.push(socialmedia_content_share)
 timeline.push(socialmedia_content_share_other)
 
