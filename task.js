@@ -924,11 +924,11 @@ var demo_houseincome = {
 			options: demo_houseincome_options,
 			horizontal: false,
 			required: true,
-			name: 'houseinicome'
+			name: 'houseincome'
 		}],
 	choices: demo_houseincome_options,
 	on_finish: function (data) {
-		data.event = 'houseinicome';
+		data.event = 'houseincome';
 		data.block = 'demographics';
 		data.resp = JSON.parse(data.responses)[data.event];
 	}
